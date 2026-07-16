@@ -64,15 +64,15 @@ The goal is to replace multiple applications (Money Manager, Trello, Todoist, Go
 auren/
 
 ├── backend/
-│
+
 ├── ios/
-│
+
 ├── docs/
-│
+
 ├── docker/
-│
+
 ├── scripts/
-│
+
 └── .github/
     └── workflows/
 ```
@@ -88,22 +88,23 @@ backend/
 
 app/
 
-│
+├── main.py
+
 ├── core/
-│
+
 ├── modules/
-│
-├── shared/
-│
-└── main.py
+
+└── shared/
 
 tests/
 
-docker/
-
 alembic/
 
-requirements/
+docker-compose.yml
+
+requirements.txt
+
+.env
 ```
 
 ---
@@ -122,12 +123,6 @@ database.py
 security.py
 
 dependencies.py
-
-exceptions.py
-
-middleware.py
-
-logging.py
 ```
 
 ---
@@ -163,36 +158,26 @@ settings/
 ```text
 finance/
 
-api/
+models.py
 
-service/
+schemas.py
 
-repository/
+service.py
 
-models/
-
-schemas/
-
-validators/
-
-exceptions/
-
-mapper/
+router.py
 ```
 
 Architecture:
 
 ```text
-API
+Router
     │
 Service
-    │
-Repository
     │
 Database
 ```
 
-Dependencies always flow downward.
+Dependencies always flow downward. No separate repository layer — the service talks directly to the database via SQLAlchemy.
 
 ---
 
@@ -225,11 +210,9 @@ Versioned from day one.
 ```text
 Route
     │
-Controller
+Router (endpoint)
     │
 Service
-    │
-Repository
     │
 Database
 ```
@@ -243,17 +226,13 @@ Reusable resources shared across all modules.
 ```text
 shared/
 
-models/
+schemas.py
 
-schemas/
+utils.py
 
-utils/
+constants.py
 
-constants/
-
-enums/
-
-types/
+enums.py
 ```
 
 ---
@@ -618,36 +597,20 @@ NotificationService
 StatisticsService
 ```
 
-Each service communicates only with its corresponding repository.
+Each service communicates directly with the database through SQLAlchemy models — no intermediate repository layer.
 
 ---
 
-# 🗃 Repository Layer
-
-```text
-FinanceRepository
-
-TaskRepository
-
-BudgetRepository
-
-CalendarRepository
-```
-
-All database queries are isolated here.
-
----
-
-# 🔄 DTO Flow
+# 🔄 Data Flow
 
 Always separate persistence models from API responses.
 
 ```text
-Database Model
+Database Model (models.py)
 
 ↓
 
-DTO
+Schema (schemas.py)
 
 ↓
 
@@ -801,7 +764,7 @@ roadmap/
                               │
 ──────────────────────────────────────────────────────────
 │                         Core                           │
-│ Auth │ Users │ Settings │ Shared │ Security │ Utils   │
+│ Auth │ Users │ Settings │ Shared │ Security            │
 ──────────────────────────────────────────────────────────
 │ Finance │ Projects │ Calendar │ Dashboard │ Notifications │
 ──────────────────────────────────────────────────────────
