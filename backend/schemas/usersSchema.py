@@ -1,6 +1,27 @@
-from pydantic import BaseModel, Field
-
+from pydantic import BaseModel, Field, EmailStr, model_validator
+from typing import Optional
 class UserCreate(BaseModel):
-    name: str = Field(..., min_length=1, max_length=100)
-    email: str = Field(..., pattern=r"^[\w\.-]+@[\w\.-]+\.\w+$")
+    name: str
+    email: EmailStr
+    password: str
+    confirm_password: str
 
+    @model_validator(mode="after")
+    def check_passwords_match(self):
+        if self.password != self.confirm_password:
+            raise ValueError("password and confirm password must be the same, try again")
+        return self
+    
+class UserOut(BaseModel):
+    id: int
+    name: str
+    email: EmailStr
+
+class UserUpdate(BaseModel):
+    name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    
+    
+    
+class Config:
+        from_attributes = True 
