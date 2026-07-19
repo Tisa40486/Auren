@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.core.database import engine, SessionLocal, Base
+from app.core.database import engine, Base
 from app.modules.users.routers import router
 
 app = FastAPI()

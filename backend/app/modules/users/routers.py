@@ -1,13 +1,13 @@
 from fastapi import APIRouter,HTTPException
 from app.core.database import engine, SessionLocal, Base, get_db
 from app.modules.users.schemas import UserCreate, UserOut, UserUpdate
-from app.modules.users.models import User
 from app.modules.users import services
 
 router = APIRouter(
     prefix="/users",
     tags=["users"]
 )
+
 db = SessionLocal()
 
 #move get_users to admin
@@ -21,7 +21,6 @@ def get_user(user_id: int):
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     return user
-
 
 @router.post("/users")
 def create_user(user: UserCreate):

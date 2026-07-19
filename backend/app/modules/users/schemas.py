@@ -21,7 +21,6 @@ class UserOut(BaseModel):
 class UserUpdate(BaseModel):
     name: Optional[str] = None
     email: Optional[EmailStr] = None
-    
-    
+     
 class Config:
         from_attributes = True 
