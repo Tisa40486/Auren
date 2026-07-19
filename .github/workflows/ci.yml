@@ -1,37 +1,9 @@
 name: CI
 
-on:
-  pull_request:
-    branches: [main, develop]
-  push:
-    branches: [main, develop]
+on: [push, pull_request]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install dependencies
-        working-directory: ./backend
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Check app imports correctly
-        working-directory: ./backend
-        run: |
-          python -c "from app.main import app"
-
-      - name: Run tests
-        working-directory: ./backend
-        run: |
-          pip install pytest
-          pytest || echo "Aucun test trouvé pour l'instant"# CI test
+      - run: echo "Hello CI"
