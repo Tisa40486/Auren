@@ -1,10 +1,10 @@
 from fastapi import FastAPI
-from database.database import engine, SessionLocal, Base
-from routers import users
+from app.core.database import engine, SessionLocal, Base
+from app.modules.users.routers import router
 
 app = FastAPI()
 Base.metadata.create_all(bind=engine)
-app.include_router(users.router)
+app.include_router(router)
 
 @app.get("/")
 def read_root():
