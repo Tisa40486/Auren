@@ -1,0 +1,6 @@
+# Default reviewer on everything
+* @Tisa40486
+
+# Examples to adapt once your friends join and take ownership of domains:
+# /app/modules/users/ @Tisa40486
+# /app/core/ @Tisa40486
