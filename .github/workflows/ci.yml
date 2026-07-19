@@ -34,4 +34,4 @@ jobs:
         working-directory: ./backend
         run: |
           pip install pytest
-          pytest || echo "Aucun test trouvé pour l'instant"
+          pytest || echo "Aucun test trouvé pour l'instant"# CI test
