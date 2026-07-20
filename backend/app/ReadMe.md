@@ -63,3 +63,28 @@ Run :
 ```
 uvicorn main:app --reload
 ```
+
+
+### Alembic
+
+Create Migrations : 
+```
+alembic revision --autogenerate -m "description du changement"
+```
+Apply pending Migration : 
+```
+alembic upgrade head
+```
+Go back : 
+```
+alembic downgrade -1
+```
+Check history :
+```
+alembic history 
+```
+
+Check Current DB : 
+````
+alembic current
+```
