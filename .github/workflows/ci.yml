@@ -30,4 +30,8 @@ jobs:
 
       - name: Check FastAPI app imports correctly
         working-directory: backend
+        env:
+          DATABASE_URL: sqlite:///./test.db
+          SECRET_KEY: ci-test-secret-key
+          ALGORITHM: HS256
         run: python -c "from app import main; print('OK:', main)"
