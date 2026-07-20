@@ -1,5 +1,5 @@
 from fastapi import APIRouter,HTTPException
-from app.core.database import engine, SessionLocal, Base, get_db
+from app.core.database import SessionLocal
 from app.modules.users.schemas import UserCreate, UserOut, UserUpdate
 from app.modules.users import services
 
