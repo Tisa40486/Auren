@@ -7,6 +7,7 @@ from app.core.config import settings
 from alembic import context
 from app.modules.users.models import User
 from app.modules.finance.models import Account
+from app.modules.log.models import Log
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
