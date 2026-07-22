@@ -69,7 +69,7 @@ uvicorn main:app --reload
 
 Create Migrations : 
 ```
-alembic revision --autogenerate -m "description du changement"
+alembic revision --autogenerate -m "message"
 ```
 Apply pending Migration : 
 ```
@@ -87,4 +87,9 @@ alembic history
 Check Current DB : 
 ````
 alembic current
+````
+
+Remove Version Alembic :
+```
+rm alembic/versions/<filesName>.py
 ```
