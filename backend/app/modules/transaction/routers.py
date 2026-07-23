@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from app.core.database import SessionLocal
 from app.modules.transaction.schemas import TransactionCreate, TransactionOut
 from app.modules.transaction import services
@@ -14,7 +14,7 @@ transactionRouter = APIRouter(
 db = SessionLocal()
 
 
-@transactionRouter.get("/")
+@transactionRouter.get("/",response_model=list[TransactionOut])
 def get_transaction():
     return services.get_all_transaction(db)
 

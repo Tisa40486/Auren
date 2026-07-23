@@ -2,7 +2,6 @@ from fastapi import APIRouter, HTTPException
 from app.core.database import SessionLocal
 from app.modules.finance.schemas import AccountCreate, AccountOut
 from app.modules.finance import services
-from app.modules.users import services as userService
 
 financeRouter = APIRouter(
     prefix="/finance",

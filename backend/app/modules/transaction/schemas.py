@@ -1,5 +1,4 @@
 from pydantic import BaseModel, Field
-from typing import Optional
 import datetime as dt
 from app.shared.Enum import TransactionType
 

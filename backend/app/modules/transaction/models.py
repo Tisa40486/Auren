@@ -1,5 +1,5 @@
 from app.core.database import Base
-from sqlalchemy import Column, Integer, String, Boolean, Enum as SAEnum, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, Enum as SAEnum, DateTime, ForeignKey
 from app.shared.Enum import TransactionType
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
