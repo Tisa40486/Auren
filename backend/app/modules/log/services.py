@@ -1,6 +1,6 @@
 from app.core.database import SessionLocal
-from app.modules.finance.models import Log
-from shared.Enum import ActionType
+from app.modules.log.models import Log
+from app.shared.Enum import ActionType
 from typing import Optional
 
 
