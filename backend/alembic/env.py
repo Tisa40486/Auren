@@ -6,6 +6,11 @@ from app.core.database import Base
 from app.core.config import settings
 from alembic import context
 
+from app.modules.users.models import User  # noqa: F401
+from app.modules.finance.models import Account  # noqa: F401
+from app.modules.log.models import Log  # noqa: F401
+from app.modules.transaction.models import Transaction  # noqa: F401
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

@@ -1,10 +1,14 @@
 from fastapi import FastAPI
 from app.core.database import engine, Base
-from app.modules.users.routers import router
+from app.modules.users.routers import userRouter
+from app.modules.finance.routers import financeRouter
+from app.modules.transaction.routers import transactionRouter
 
 app = FastAPI()
 Base.metadata.create_all(bind=engine)
-app.include_router(router)
+app.include_router(userRouter)
+app.include_router(financeRouter)
+app.include_router(transactionRouter)
 
 @app.get("/")
 def read_root():

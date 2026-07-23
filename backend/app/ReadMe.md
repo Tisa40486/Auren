@@ -69,7 +69,7 @@ uvicorn main:app --reload
 
 Create Migrations : 
 ```
-alembic revision --autogenerate -m "description du changement"
+alembic revision --autogenerate -m "message"
 ```
 Apply pending Migration : 
 ```
@@ -87,4 +87,30 @@ alembic history
 Check Current DB : 
 ````
 alembic current
+````
+
+Remove Version Alembic :
 ```
+rm alembic/versions/<filesName>.py
+```
+
+### SQLAlchemy Enums with PostgreSQL
+
+By default, `sqlalchemy.Enum` creates a **native Postgres type** (not just a column constraint).
+This means adding a new value to an Enum later requires a manual migration step —
+Alembic's autogenerate won't handle it reliably inside a transaction.
+
+**Manual migration to add a new Enum value:**
+op.execute("ALTER TYPE actiontype ADD VALUE 'new_value'")
+
+(Replace `actiontype` with your actual Postgres type name, check it in DBeaver if unsure — lowercase by default.)
+
+**Alternative — avoid native Postgres Enum entirely:**
+```python
+actionType = Column(SAEnum(ActionType, native_enum=False), nullable=False)
+```
+This stores the Enum as a `VARCHAR` with a `CHECK` constraint instead of a native type.
+Adding a new value then only requires a normal Alembic migration — no manual `ALTER TYPE` needed.
+
+Trade-off: native Enum is stricter/cleaner at the DB level, but harder to evolve.
+`native_enum=False` is easier to maintain long-term if the Enum is expected to grow.
