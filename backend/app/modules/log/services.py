@@ -1,10 +1,10 @@
+
 from app.core.database import SessionLocal
 from app.modules.log.models import Log
 from app.shared.enums import ActionType
-from typing import Optional
 
 
-def create_log(accountId: int, actionType: ActionType, details: Optional[dict] = None, ipAddress: Optional[str] = None,) -> None:
+def create_log(accountId: int, actionType: ActionType, details: dict | None = None, ipAddress: str | None = None,) -> None:
     db = SessionLocal()
     try:
         db_log = Log(

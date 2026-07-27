@@ -1,5 +1,6 @@
+
 from pydantic import BaseModel, EmailStr, model_validator
-from typing import Optional
+
 
 class UserCreate(BaseModel):
     name: str
@@ -19,8 +20,8 @@ class UserOut(BaseModel):
     email: EmailStr
 
 class UserUpdate(BaseModel):
-    name: Optional[str] = None
-    email: Optional[EmailStr] = None
+    name: str | None = None
+    email: EmailStr | None = None
      
 class Config:
         from_attributes = True 

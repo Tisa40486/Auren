@@ -1,5 +1,6 @@
-from pydantic import BaseModel, model_validator
 from app.modules.users.schemas import UserOut
+from pydantic import BaseModel, model_validator
+
 
 class AccountCreate(BaseModel):
     name: str
