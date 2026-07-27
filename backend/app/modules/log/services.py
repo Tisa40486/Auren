@@ -1,6 +1,6 @@
 from app.core.database import SessionLocal
 from app.modules.log.models import Log
-from app.shared.Enum import ActionType
+from app.shared.enums import ActionType
 from typing import Optional
 
 

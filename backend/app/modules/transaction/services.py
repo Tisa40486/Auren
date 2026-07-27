@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from app.modules.transaction.models import Transaction
 from app.modules.transaction.schemas import TransactionCreate
 from app.modules.finance.models import Account
-from app.shared.Enum import TransactionType, ActionType
+from app.shared.enums import TransactionType, ActionType
 from app.modules.log.services import create_log
 
 def create_transaction(db: Session, tran: TransactionCreate) -> Transaction:

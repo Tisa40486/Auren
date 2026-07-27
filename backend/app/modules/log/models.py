@@ -2,7 +2,7 @@ from app.core.database import Base
 from sqlalchemy import Column, Integer, DateTime, JSON, Enum as SAEnum, ForeignKey, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-from app.shared.Enum import ActionType
+from app.shared.enums import ActionType
 
 class Log(Base):
     __tablename__ = "log"
