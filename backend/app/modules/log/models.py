@@ -1,8 +1,10 @@
 from app.core.database import Base
-from sqlalchemy import Column, Integer, DateTime, JSON, Enum as SAEnum, ForeignKey, String
+from app.shared.enums import ActionType
+from sqlalchemy import JSON, Column, DateTime, ForeignKey, Integer, String
+from sqlalchemy import Enum as SAEnum
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-from app.shared.Enum import ActionType
+
 
 class Log(Base):
     __tablename__ = "log"

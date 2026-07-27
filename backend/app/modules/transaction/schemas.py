@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field
 import datetime as dt
-from app.shared.Enum import TransactionType
+
+from app.shared.enums import TransactionType
+from pydantic import BaseModel, Field
 
 
 class TransactionCreate(BaseModel):
