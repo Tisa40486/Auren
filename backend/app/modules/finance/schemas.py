@@ -14,6 +14,7 @@ class AccountCreate(BaseModel):
         return self
     
 class AccountOut(BaseModel):
+    id: int
     name: str
     userId: int
     amount: int
