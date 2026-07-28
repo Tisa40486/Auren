@@ -1,11 +1,3 @@
-//
-//  HomeView.swift
-//  Auren
-//
-//  Created by Mattis Lefranc Adam on 28.07.2026.
-//
-
-
 import SwiftUI
 
 struct HomeView: View {
@@ -18,29 +10,20 @@ struct HomeView: View {
             if viewModel.isLoading {
                 ProgressView()
             } else if let user = session.currentUser {
-                Text("Bonjour, \(user.username) 👋")
+                Text("Welcome, \(user.name) 👋")
                     .font(.title)
 
                 if viewModel.hasAccount {
-                    Text("Vue globale du compte à venir ici")
+                    Text("Overview of the upcoming account here")
                     // TODO: AccountOverviewView
                 } else {
-                    Text("Tu n'as pas encore de compte")
-                    Button("Créer mon compte") {
-                        navigateToCreateFinancialAccount = true
+                    Button("Logout") {
+                        session.logout()
                     }
                     .buttonStyle(.borderedProminent)
                 }
             }
         }
         .padding()
-        .task {
-            if let user = session.currentUser {
-                await viewModel.checkAccount(userId: user.id)
-            }
-        }
-        .navigationDestination(isPresented: $navigateToCreateFinancialAccount) {
-            CreateFinancialAccountView()
-        }
     }
 }

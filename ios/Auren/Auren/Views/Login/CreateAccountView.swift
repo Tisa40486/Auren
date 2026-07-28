@@ -3,14 +3,15 @@ import SwiftUI
 struct CreateAccountView: View {
     @StateObject private var viewModel = CreateAccountViewModel()
     @EnvironmentObject var session: SessionManager
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         VStack(spacing: 20) {
-            Text("Créer un compte")
+            Text("Create Account")
                 .font(.largeTitle)
                 .bold()
 
-            TextField("Nom d'utilisateur", text: $viewModel.username)
+            TextField("User Name", text: $viewModel.username)
                 .textFieldStyle(.roundedBorder)
                 .autocapitalization(.none)
 
@@ -19,7 +20,9 @@ struct CreateAccountView: View {
                 .keyboardType(.emailAddress)
                 .autocapitalization(.none)
 
-            SecureField("Mot de passe", text: $viewModel.password)
+            SecureField("Password", text: $viewModel.password)
+                .textFieldStyle(.roundedBorder)
+            SecureField("Confirm Password", text: $viewModel.confirm_password)
                 .textFieldStyle(.roundedBorder)
 
             if let error = viewModel.errorMessage {
@@ -31,12 +34,15 @@ struct CreateAccountView: View {
             Button {
                 Task {
                     await viewModel.createAccount(session: session)
+                    if viewModel.errorMessage == nil {
+                        dismiss()
+                    }
                 }
             } label: {
                 if viewModel.isLoading {
                     ProgressView()
                 } else {
-                    Text("Créer mon compte")
+                    Text("Create Account")
                 }
             }
             .buttonStyle(.borderedProminent)

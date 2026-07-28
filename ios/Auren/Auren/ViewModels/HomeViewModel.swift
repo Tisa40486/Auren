@@ -16,14 +16,14 @@ class HomeViewModel: ObservableObject {
 
     private let apiClient = APIClient.shared
 
-    func checkAccount(userId: Int) async {
-        isLoading = true
-        do {
-            let _: Account = try await apiClient.request(endpoint: "accounts/\(userId)")
-            hasAccount = true
-        } catch {
-            hasAccount = false
-        }
-        isLoading = false
-    }
+//    func checkAccount(userId: Int) async {
+//        isLoading = true
+//        do {
+//            let _: Account = try await apiClient.request(endpoint: "accounts/\(userId)")
+//            hasAccount = true
+//        } catch {
+//            hasAccount = false
+//        }
+//        isLoading = false
+//    }
 }
