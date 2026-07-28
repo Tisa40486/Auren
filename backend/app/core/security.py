@@ -1,12 +1,14 @@
 from datetime import datetime, timedelta, timezone
-from jose import jwt, JWTError
-from passlib.context import CryptContext
-from .config import settings
-from fastapi.security import OAuth2PasswordBearer
-from sqlalchemy.orm import Session
-from fastapi import Depends, HTTPException, status
+
 from app.core.database import get_db
 from app.modules.users import services
+from fastapi import Depends, HTTPException
+from fastapi.security import OAuth2PasswordBearer
+from jose import JWTError, jwt
+from passlib.context import CryptContext
+from sqlalchemy.orm import Session
+
+from .config import settings
 
 SECRET_KEY = settings.secret_key
 ALGORITHM = "HS256"

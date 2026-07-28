@@ -1,9 +1,9 @@
-from fastapi import APIRouter, HTTPException, Depends
 from app.core.database import SessionLocal
+from app.core.security import get_current_user
 from app.modules.finance import services
 from app.modules.finance.schemas import AccountCreate, AccountOut
-from app.modules.finance import services
-from app.core.security import get_current_user
+from app.modules.users.models import User
+from fastapi import APIRouter, Depends, HTTPException
 
 financeRouter = APIRouter(
     prefix="/finance",

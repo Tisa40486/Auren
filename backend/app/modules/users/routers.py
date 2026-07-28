@@ -1,8 +1,9 @@
-from fastapi import APIRouter, HTTPException, Depends
 from app.core.database import SessionLocal
+from app.core.security import get_current_user
 from app.modules.users import services
+from app.modules.users.models import User
 from app.modules.users.schemas import UserCreate, UserOut, UserUpdate
-from app.modules.users import services
+from fastapi import APIRouter, Depends, HTTPException
 
 userRouter = APIRouter(
     prefix="/users",

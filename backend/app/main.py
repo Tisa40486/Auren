@@ -1,7 +1,7 @@
 from app.core.database import Base, engine
+from app.modules.auth.routers import authRouter
 from app.modules.finance.routers import financeRouter
 from app.modules.transaction.routers import transactionRouter
-from app.modules.auth.routers import authRouter
 from app.modules.users.routers import userRouter
 from fastapi import FastAPI
 
