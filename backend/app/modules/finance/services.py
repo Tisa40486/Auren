@@ -29,6 +29,9 @@ def get_all_accounts(db: Session):
 def get_account_by_id(db: Session, account_id: int):
     return db.query(Account).options(joinedload(Account.user)).filter(Account.id == account_id).first()
 
+def get_account_by_userId(db: Session, user_id: int):
+    return db.query(Account).options(joinedload(Account.user)).filter(Account.userId == user_id).all()
+
 def delete_account_by_id(db:Session, account_id: int) -> bool:
     account = db.query(Account).options(joinedload(Account.user)).filter(Account.id == account_id).first()
     if not account:

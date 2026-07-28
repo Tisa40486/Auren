@@ -15,7 +15,7 @@ db = SessionLocal()
 def get_accounts(current_user: User = Depends(get_current_user)):
     return services.get_all_accounts(db)
 
-@financeRouter.post("/accounts")
+@financeRouter.post("/")
 def create_account(account: AccountCreate):
     return services.create_account(db, account)
 
@@ -25,6 +25,11 @@ def get_account(account_id: int, current_user: User = Depends(get_current_user))
     if not account:
         raise HTTPException(status_code=404, detail="account not found")
     return account
+    
+@financeRouter.get("/user/{userId}")
+def get_accountByUserId(userId: int, current_user: User = Depends(get_current_user)):
+    return services.get_account_by_userId(db, userId)
+ 
     
 @financeRouter.delete("/{account_id}")
 def delete_user(account_id: int, current_user: User = Depends(get_current_user)):
