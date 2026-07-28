@@ -1,8 +1,10 @@
 from app.core.database import Base
-from sqlalchemy import Column, Integer, Enum as SAEnum, DateTime, ForeignKey
-from app.shared.Enum import TransactionType
-from sqlalchemy.sql import func
+from app.shared.enums import TransactionType
+from sqlalchemy import Column, DateTime, ForeignKey, Integer
+from sqlalchemy import Enum as SAEnum
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
+
 
 class Transaction(Base):
     __tablename__ = "transactions"
