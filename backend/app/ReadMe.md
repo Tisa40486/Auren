@@ -114,3 +114,20 @@ Adding a new value then only requires a normal Alembic migration — no manual `
 
 Trade-off: native Enum is stricter/cleaner at the DB level, but harder to evolve.
 `native_enum=False` is easier to maintain long-term if the Enum is expected to grow.
+
+## Ruff
+
+install : 
+````
+pip install ruff
+````
+
+show errors
+````
+ruff check --fix .
+````
+
+check after cleaning:
+````
+ruff check .
+````
