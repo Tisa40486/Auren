@@ -23,7 +23,7 @@ def get_user(user_id: int):
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
-@userRouter.post("/users")
+@userRouter.post("/")
 def create_user(user: UserCreate):
     return services.create_user(db, user)
 
