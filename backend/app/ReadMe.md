@@ -59,9 +59,9 @@ def read_user(user_id: int):
 # Docs: http://localhost:8000/docs
 ```
 
-Run :
+Run from backend/ :
 ```
-uvicorn main:app --reload
+uvicorn app.main:app --reload
 ```
 
 

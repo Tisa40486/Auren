@@ -5,10 +5,10 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 
 class Transaction(Base):
-    __tablename__ = "transaction"
+    __tablename__ = "transactions"
     
     id = Column(Integer, primary_key=True)
-    accountId = Column(Integer, ForeignKey("account.id"), nullable=False)
+    accountId = Column(Integer, ForeignKey("accounts.id"), nullable=False)
     amount = Column(Integer)
     transactionType = Column(SAEnum(TransactionType), nullable=False)
     createdAt = Column(DateTime(timezone=True), server_default=func.now())
