@@ -10,7 +10,7 @@ class Log(Base):
     __tablename__ = "log"
 
     id = Column(Integer, primary_key=True)
-    accountId = Column(Integer, ForeignKey("account.id"), nullable=False)
+    accountId = Column(Integer, ForeignKey("accounts.id"), nullable=False)
     actionType = Column(SAEnum(ActionType), nullable=False)
     details = Column(JSON, nullable=True)
     ipAddress = Column(String, nullable=True)
