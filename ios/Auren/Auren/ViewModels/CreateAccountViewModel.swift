@@ -5,7 +5,6 @@
 //  Created by Mattis Lefranc Adam on 28.07.2026.
 //
 
-
 import Foundation
 import Combine
 
@@ -43,7 +42,6 @@ class CreateAccountViewModel: ObservableObject {
             )
 
             session.login(user: user)
-
         }
         catch {
             if let decodingError = error as? DecodingError {

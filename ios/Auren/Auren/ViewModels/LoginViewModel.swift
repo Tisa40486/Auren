@@ -32,8 +32,7 @@ class LoginViewModel: ObservableObject {
                 token: tokenResponse.access_token
             )
 
-            session.login(user: user)
-
+            session.login(user: user, token: tokenResponse.access_token)
         }
         catch {
             if let decodingError = error as? DecodingError {

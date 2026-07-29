@@ -16,14 +16,21 @@ struct HomeView: View {
                 if viewModel.hasAccount {
                     Text("Overview of the upcoming account here")
                     // TODO: AccountOverviewView
-                } else {
-                    Button("Logout") {
-                        session.logout()
-                    }
-                    .buttonStyle(.borderedProminent)
                 }
+                Button("Logout") {
+                    session.logout()
+                }
+                .buttonStyle(.bordered)
             }
         }
         .padding()
+        .task {
+            if let user = session.currentUser, let token = session.token {
+                await viewModel.checkAccount(userId: user.id, token: token)
+            }
+        }
+        .navigationDestination(isPresented: $navigateToCreateFinancialAccount) {
+            // CreateFinancialAccountView() — à créer si pas encore fait
+        }
     }
 }

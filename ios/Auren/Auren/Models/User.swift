@@ -8,6 +8,6 @@ struct User: Codable, Identifiable {
     let id: Int
     let name: String
     let email: String
-    let password: String
-    let updated: Bool
+    let password: String?
+    let updated: Bool?
 }

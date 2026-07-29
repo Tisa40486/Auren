@@ -1,11 +1,3 @@
-//
-//  RootView.swift
-//  Auren
-//
-//  Created by Mattis Lefranc Adam on 28.07.2026.
-//
-
-
 import SwiftUI
 
 struct RootView: View {
@@ -14,9 +6,22 @@ struct RootView: View {
     var body: some View {
         Group {
             if session.isAuthenticated {
-                HomeView()
+                NavigationStack {
+                    TabView {
+                        HomeView()
+                            .tabItem {
+                                Label("Home", systemImage: "house.fill")
+                            }
+                        AccountListView()
+                            .tabItem {
+                                Label("Accounts", systemImage: "building.columns.fill")
+                            }
+                    }
+                }
             } else {
-                LoginView()
+                NavigationStack {
+                    LoginView()
+                }
             }
         }
     }
