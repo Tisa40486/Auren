@@ -30,14 +30,26 @@ struct AccountListView: View {
                     .buttonStyle(.borderedProminent)
                 }
                 else {
-                    List(viewModel.accounts) { account in
-                        NavigationLink(value: account.id) {
-                            VStack(alignment: .leading) {
-                                Text(account.name)
-                                    .font(.headline)
-                                Text(account.id.formatted())
+                    List {
+                        ForEach(viewModel.accounts) { account in
+                            NavigationLink(value: account.id) {
+                                VStack(alignment: .leading) {
+                                    Text(account.name)
+                                        .font(.headline)
+                                    Text(account.id.formatted())
+                                }
                             }
                         }
+                        .onDelete { indexSet in
+                            Task {
+                                await viewModel.deleteAccount(at: indexSet, session: session)
+                            }
+                        }
+
+                        Button("Créer un compte") {
+                            navigateToCreateFinancialAccount = true
+                        }
+                        .buttonStyle(.borderedProminent)
                     }
                 }
             }
@@ -46,8 +58,7 @@ struct AccountListView: View {
                 AccountDetailView(id: id)
             }
             .navigationDestination(isPresented: $navigateToCreateFinancialAccount) {
-                //CreateFinancialAccountView()
-                // Create the Form
+                CreateFinancialAccountView()
             }
             .task {
                 await viewModel.loadAccounts(session: session.self)
