@@ -4,7 +4,7 @@ from app.modules.transaction.models import Transaction
 from app.modules.transaction.schemas import TransactionCreate
 from app.shared.enums import ActionType, TransactionType
 from fastapi import HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 
 def create_transaction(db: Session, tran: TransactionCreate) -> Transaction:
@@ -47,3 +47,6 @@ def create_transaction(db: Session, tran: TransactionCreate) -> Transaction:
 
 def get_all_transaction(db: Session):
     return db.query(Transaction).all()
+
+def get_transaction_By_AccountId(db: Session, account_id: int):
+ return db.query(Transaction).options(joinedload(Transaction.account)).filter(Transaction.accountId == account_id).all()
