@@ -17,8 +17,8 @@ def get_transaction():
     return services.get_all_transaction(db)
 
 @transactionRouter.get("/{account_id}",response_model=list[TransactionOut])
-def get_transaction_by_accountId(accountId : int):
-    return services.get_transaction_By_AccountId(db, accountId)
+def get_transaction_by_accountId(account_id : int):
+    return services.get_transaction_By_AccountId(db, account_id)
 
 @transactionRouter.post("/")
 def create_transaction(tran: TransactionCreate, db: Session = Depends(get_db)):
