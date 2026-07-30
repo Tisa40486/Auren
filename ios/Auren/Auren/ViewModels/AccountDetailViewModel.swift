@@ -4,6 +4,7 @@ import Combine
 @MainActor
 class AccountDetailViewModel: ObservableObject {
     @Published var account: FinancialAccountResponse?
+    @Published var transactions: [TransactionResponse] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
 
@@ -30,6 +31,24 @@ class AccountDetailViewModel: ObservableObject {
             self.errorMessage = "Erreur : \(error.localizedDescription)"
         }
 
+        isLoading = false
+    }
+    func loadTransactions(session: SessionManager) async {
+        isLoading = true
+        errorMessage = nil
+        
+        do {
+            let fetchedTransactions: [TransactionResponse] = try await apiClient.request(
+                endpoint: "transaction/\(self.id)",
+                method: "GET",
+                token: session.token
+            )
+            self.transactions = fetchedTransactions
+        }
+        catch {
+           print("Erreur loadAccount: \(error)")
+           self.errorMessage = "Erreur : \(error.localizedDescription)"
+       }
         isLoading = false
     }
 }
