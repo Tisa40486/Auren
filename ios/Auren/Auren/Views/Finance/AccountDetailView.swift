@@ -13,9 +13,11 @@ struct AccountDetailView: View {
     init(id: Int) {
         _viewModel = StateObject(wrappedValue: AccountDetailViewModel(id: id))
     }
+    
     private func amountColor(for amount: Int) -> Color {
         amount >= 0 ? .green : .red
     }
+    
     private func transactionColor(for type: TransactionType) -> Color {
         switch type {
         case .deposit:

@@ -36,4 +36,28 @@ class AccountListViewModel: ObservableObject {
 
         isLoading = false
     }
+    
+    func deleteAccount(at offsets: IndexSet, session: SessionManager) async {
+        guard let token = session.token else {
+            errorMessage = "User not logged."
+            return
+        }
+
+        let accountsToDelete = offsets.map { accounts[$0] }
+
+        for account in accountsToDelete {
+            do {
+                let _: EmptyResponse = try await apiClient.request(
+                    endpoint: "finance/\(account.id)",
+                    method: "DELETE",
+                    token: token
+                )
+                accounts.removeAll { $0.id == account.id }
+            } catch {
+                print("Erreur deleteAccount: \(error)")
+                errorMessage = "Error deleting"
+            }
+        }
+    }
 }
+struct EmptyResponse: Decodable {}
