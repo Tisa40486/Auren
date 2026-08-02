@@ -1,6 +1,6 @@
 from app.core.database import Base
 from app.shared.enums import TransactionType
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Float
+from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy import Enum as SAEnum
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
