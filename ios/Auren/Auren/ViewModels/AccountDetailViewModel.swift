@@ -43,7 +43,7 @@ class AccountDetailViewModel: ObservableObject {
                 method: "GET",
                 token: session.token
             )
-            self.transactions = fetchedTransactions
+            self.transactions = fetchedTransactions.reversed()
         }
         catch {
            print("Erreur loadAccount: \(error)")

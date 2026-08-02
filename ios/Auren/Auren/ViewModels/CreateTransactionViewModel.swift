@@ -6,10 +6,11 @@ class CreateTransactionViewModel: ObservableObject {
     private let accountId: Int
 
     @Published var amountText: String = ""
+    @Published var commentText: String = ""
     @Published var transactionType: TransactionType = .deposit
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
-    @Published var lastTransaction: Transaction?
+    @Published var lastTransaction: TransactionResponse?
 
     private let apiClient = APIClient.shared
 
@@ -23,7 +24,7 @@ class CreateTransactionViewModel: ObservableObject {
             return
         }
 
-        guard let amount = Double(amountText), amount > 0 else {
+        guard let amount = Double(amountText.replacingOccurrences(of: ",", with: ".")), amount > 0 else {
             errorMessage = "Invalid amount"
             return
         }
@@ -35,9 +36,10 @@ class CreateTransactionViewModel: ObservableObject {
             let payload = CreateTransactionRequest(
                 accountId: accountId,
                 amount: amount,
-                transactionType: transactionType
+                transactionType: transactionType,
+                comment: commentText
             )
-            let transaction: Transaction = try await apiClient.request(
+            let transaction: TransactionResponse = try await apiClient.request(
                 endpoint: "transaction",
                 method: "POST",
                 body: payload
@@ -58,16 +60,9 @@ class CreateTransactionViewModel: ObservableObject {
     }
 }
 
-struct Transaction: Codable, Identifiable {
-    let id: Int
-    let amount: Double
-    let createdAt: Date
-    let transactionType: TransactionType
-    let accountId: Int
-}
-
 struct CreateTransactionRequest: Codable {
     let accountId: Int
     let amount: Double
     let transactionType: TransactionType
+    let comment: String
 }

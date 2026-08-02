@@ -22,6 +22,7 @@ def create_transaction(db: Session, tran: TransactionCreate) -> Transaction:
             accountId=tran.accountId,
             amount=tran.amount,
             transactionType=tran.transactionType,
+            comment = tran.comment
         )
         db.add(db_tran)
         db.commit()
@@ -30,7 +31,7 @@ def create_transaction(db: Session, tran: TransactionCreate) -> Transaction:
         create_log(
             accountId=tran.accountId,
             actionType=ActionType.TRANSACTION_CREATED,
-            details={"amount": tran.amount, "type": tran.transactionType.value},
+            details={"amount": tran.amount, "type": tran.transactionType.value, "comment": tran.comment},
         )
 
         return db_tran
@@ -40,7 +41,7 @@ def create_transaction(db: Session, tran: TransactionCreate) -> Transaction:
         create_log(
             accountId=tran.accountId,
             actionType=ActionType.TRANSACTION_FAILED,
-            details={"amount": tran.amount, "type": tran.transactionType.value},
+            details={"amount": tran.amount, "type": tran.transactionType.value, "comment": tran.comment},
         )
         raise
 

@@ -25,6 +25,8 @@ struct CreateTransactionView: View {
 
                 TextField("Amount", text: $viewModel.amountText)
                     .keyboardType(.decimalPad)
+                
+                TextField("Comment", text: $viewModel.commentText)
             }
 
             if let error = viewModel.errorMessage {
