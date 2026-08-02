@@ -6,16 +6,18 @@ from pydantic import BaseModel, Field
 
 class TransactionCreate(BaseModel):
     accountId: int
-    amount: int = Field(gt=0)
+    amount: float = Field(gt=0)
     transactionType: TransactionType
+    comment: str
 
 
 class TransactionOut(BaseModel):
     id: int
     accountId: int
-    amount: int
+    amount: float
     transactionType: TransactionType
     createdAt: dt.datetime
+    comment: str
 
     class Config:
         from_attributes = True

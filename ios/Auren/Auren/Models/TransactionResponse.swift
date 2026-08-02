@@ -12,4 +12,5 @@ struct TransactionResponse: Identifiable, Codable {
     let accountId: Int
     let amount: Int
     let createdAt: Date
+    let comment: String
 }

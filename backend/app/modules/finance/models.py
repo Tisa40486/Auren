@@ -1,5 +1,5 @@
 from app.core.database import Base
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 
@@ -11,5 +11,5 @@ class Account(Base):
     name = Column(String)
     amount = Column(Integer)
     pinCode = Column(String)
-    
+    is_active = Column(Boolean, default=True, nullable=False)
     user = relationship("User")
