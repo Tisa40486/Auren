@@ -9,7 +9,8 @@ import SwiftUI
 struct AccountDetailView: View {
     @StateObject private var viewModel: AccountDetailViewModel
     @EnvironmentObject var session: SessionManager
-    
+    @State private var navigateToCreateTransaction = false
+
     init(id: Int) {
         _viewModel = StateObject(wrappedValue: AccountDetailViewModel(id: id))
     }
@@ -61,6 +62,10 @@ struct AccountDetailView: View {
                     Text("\(account.amount.formatted()) €")
                         .font(.title2)
                         .foregroundColor(amountColor(for: account.amount))
+                    Button("Add a transaction") {
+                        navigateToCreateTransaction = true
+                    }
+                    .buttonStyle(.borderedProminent)
                     Divider()
                     
                     if viewModel.transactions.isEmpty {
@@ -92,6 +97,11 @@ struct AccountDetailView: View {
             await viewModel.loadAccount(session: session.self)
             await viewModel.loadTransactions(session: session.self)
 
+        }
+        .navigationDestination(isPresented: $navigateToCreateTransaction) {
+            if let account = viewModel.account {
+                CreateTransactionView(accountId: account.id)
+            }
         }
     }
 }
