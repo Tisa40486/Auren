@@ -6,48 +6,55 @@ struct CreateAccountView: View {
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        VStack(spacing: 20) {
-            Text("Create Account")
-                .font(.largeTitle)
-                .bold()
+        ZStack {
+            Color.aurenBackground.ignoresSafeArea()
 
-            TextField("User Name", text: $viewModel.username)
-                .textFieldStyle(.roundedBorder)
-                .autocapitalization(.none)
+            VStack(spacing: 32) {
+                Spacer(minLength: 40)
 
-            TextField("Email", text: $viewModel.email)
-                .textFieldStyle(.roundedBorder)
-                .keyboardType(.emailAddress)
-                .autocapitalization(.none)
+                VStack(spacing: 8) {
+                    Text("Create Account")
+                        .font(.custom("Fraunces", size: 34))
+                        .foregroundColor(.aurenTextPrimary)
+                        .bold()
 
-            SecureField("Password", text: $viewModel.password)
-                .textFieldStyle(.roundedBorder)
-            SecureField("Confirm Password", text: $viewModel.confirm_password)
-                .textFieldStyle(.roundedBorder)
+                    Text("Create your account to continue")
+                        .font(.custom("Fraunces", size: 16))
+                        .foregroundColor(.accentColor)
+                }
 
-            if let error = viewModel.errorMessage {
-                Text(error)
-                    .foregroundColor(.red)
-                    .font(.footnote)
-            }
+                VStack(spacing: 16) {
+                    AUInput(placeholder: "Username", text: $viewModel.username, icon: "person")
+                        .autocapitalization(.none)
 
-            Button {
-                Task {
-                    await viewModel.createAccount(session: session)
-                    if viewModel.errorMessage == nil {
-                        dismiss()
+                    AUInput(placeholder: "Email", text: $viewModel.email, icon: "envelope")
+                        .autocapitalization(.none)
+
+                    AUInput(placeholder: "Password", text: $viewModel.password, isSecure: true, icon: "lock")
+
+                    AUInput(placeholder: "Confirm Password", text: $viewModel.confirm_password, isSecure: true, icon: "lock")
+                }
+
+                if let error = viewModel.errorMessage {
+                    Text(error)
+                        .font(.custom("Inter", size: 13))
+                        .foregroundColor(.aurenNegative)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+
+                AUButton(title: "Create Account", isLoading: viewModel.isLoading, width: 150) {
+                    Task {
+                        await viewModel.createAccount(session: session)
+                        if viewModel.errorMessage == nil {
+                            dismiss()
+                        }
                     }
                 }
-            } label: {
-                if viewModel.isLoading {
-                    ProgressView()
-                } else {
-                    Text("Create Account")
-                }
+                .disabled(viewModel.isLoading)
+
+                Spacer()
             }
-            .buttonStyle(.borderedProminent)
-            .disabled(viewModel.isLoading)
+            .padding()
         }
-        .padding()
     }
 }

@@ -13,45 +13,62 @@ struct LoginView: View {
     @State private var navigateToCreateAccount = false
 
     var body: some View {
-        VStack(spacing: 20) {
-            Text("Connexion")
-                .font(.largeTitle)
-                .bold()
-            TextField("User Name", text: $viewModel.username)
-                .textFieldStyle(.roundedBorder)
-                .autocapitalization(.none)
+        ZStack {
+            Color.aurenBackground.ignoresSafeArea()
 
-            SecureField("Password", text: $viewModel.password)
-                .textFieldStyle(.roundedBorder)
+            VStack(spacing: 32) {
+                Spacer(minLength: 40)
 
-            if let error = viewModel.errorMessage {
-                Text(error)
-                    .foregroundColor(.red)
-                    .font(.footnote)
-            }
+                
+                VStack(spacing: 8) {
+                    Text("Auren")
+                        .font(.custom("Fraunces", size: 34))
+                        .foregroundColor(.aurenTextPrimary)
 
-            Button {
-                Task {
-                    await viewModel.login(session: session)
+                    Text("One app to manage your life.")
+                        .font(.custom("Inter", size: 14))
+                        .foregroundColor(.aurenTextSecondary)
+                        .italic()
                 }
-            } label: {
-                if viewModel.isLoading {
-                    ProgressView()
-                } else {
-                    Text("Connect")
+
+                
+                VStack(spacing: 16) {
+                    AUInput(placeholder: "Username", text: $viewModel.username, icon: "person")
+                        .autocapitalization(.none)
+                    
+                    AUInput(placeholder: "Password", text: $viewModel.password, isSecure: true, icon: "lock")
+                    
+                    if let error = viewModel.errorMessage {
+                        Text(error)
+                            .font(.custom("Inter", size: 13))
+                            .foregroundColor(.aurenNegative)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
-            }
-            .buttonStyle(.borderedProminent)
-            .disabled(viewModel.isLoading)
 
-            Divider()
+                AUButton(title: "Connect", isLoading: viewModel.isLoading) {
+                    Task {
+                        await viewModel.login(session: session)
+                    }
+                }
 
-            Button("Create An Account") {
-                navigateToCreateAccount = true
+                
+                HStack {
+                    Rectangle().fill(Color.aurenBorder).frame(height: 1)
+                    Text("or")
+                        .font(.custom("Inter", size: 12))
+                        .foregroundColor(.aurenTextSecondary)
+                    Rectangle().fill(Color.aurenBorder).frame(height: 1)
+                }
+
+                AUButton(title: "Create an account", style: .ghost, width: 200) {
+                    navigateToCreateAccount = true
+                }
+
+                Spacer()
             }
-            .font(.footnote)
+            .padding(.horizontal, 28)
         }
-        .padding()
         .navigationDestination(isPresented: $navigateToCreateAccount) {
             CreateAccountView()
         }
