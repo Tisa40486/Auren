@@ -62,6 +62,7 @@ def read_user(user_id: int):
 Run from backend/ :
 ```
 uvicorn app.main:app --reload
+uvicorn main:app --reload
 ```
 
 
