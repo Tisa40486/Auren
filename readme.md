@@ -94,7 +94,7 @@ Auren aims to grow into a complete life-management app, organized around several
 </tr>
 </table>
 
-> This is the long-term vision — see [Roadmap](#️-roadmap) for what's actively being worked on.
+> This is the long-term vision — see [Roadmap](#️roadmap) for what's actively being worked on.
 
 <br>
 
