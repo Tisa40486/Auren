@@ -1,7 +1,8 @@
-from fastapi import APIRouter,HTTPException
+from fastapi import APIRouter, HTTPException
+
 from app.core.database import SessionLocal
-from app.modules.users.schemas import UserCreate, UserOut, UserUpdate
 from app.modules.users import services
+from app.modules.users.schemas import UserCreate, UserOut, UserUpdate
 
 router = APIRouter(
     prefix="/users",
