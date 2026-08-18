@@ -5,7 +5,7 @@ from pydantic import BaseModel, model_validator
 class AccountCreate(BaseModel):
     name: str
     userId: int
-    amount: int
+    amount: float
     pinCode: str
     confirm_pinCode: str
     @model_validator(mode="after")
