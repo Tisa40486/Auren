@@ -9,6 +9,8 @@ struct AUInput: View {
     let placeholder: String
     @Binding var text: String
     var isSecure: Bool = false
+    var isPin: Bool = false
+
     var icon: String? = nil
 
     var body: some View {
@@ -37,6 +39,7 @@ struct AUInput: View {
                 .stroke(Color.aurenBorder, lineWidth: 0.75)
         )
         .cornerRadius(AURadius.medium)
+        .keyboardType(isPin ? .numberPad : .default)
     }
 
     private var placeholderText: Text {

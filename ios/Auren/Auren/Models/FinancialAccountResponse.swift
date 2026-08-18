@@ -9,6 +9,6 @@ struct FinancialAccountResponse: Identifiable, Codable {
     let id: Int
     let name: String
     let userId: Int
-    let amount: Int
+    let amount: Double
     let user: User
 }

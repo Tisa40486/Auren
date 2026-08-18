@@ -15,41 +15,42 @@ struct AccountListView: View {
 
     var body: some View {
         NavigationStack {
-            Group {
-                if viewModel.isLoading {
-                    ProgressView("Loading...")
-                }
-                else if let error = viewModel.errorMessage {
-                    Text(error)
-                        .foregroundColor(.red)
-                }
-                else if !viewModel.hasAccount {
-                    Button("Create a financial account") {
-                        navigateToCreateFinancialAccount = true
+            ZStack {
+                Color.aurenBackground.ignoresSafeArea()
+                Group {
+                    if viewModel.isLoading {
+                        ProgressView("Loading...")
                     }
-                    .buttonStyle(.borderedProminent)
-                }
-                else {
-                    List {
-                        ForEach(viewModel.accounts) { account in
-                            NavigationLink(value: account.id) {
-                                VStack(alignment: .leading) {
-                                    Text(account.name)
-                                        .font(.headline)
-                                    Text(account.id.formatted())
+                    else if let error = viewModel.errorMessage {
+                        Text(error)
+                            .foregroundColor(.red)
+                    }
+                    else if !viewModel.hasAccount {
+                        AUButton(title: "Create a financial account", style: .ghost, width: 250, fontSize: 20) {
+                            navigateToCreateFinancialAccount = true
+                        }.buttonStyle(.bordered)
+                    }
+                    else {
+                        List {
+                            ForEach(viewModel.accounts) { account in
+                                NavigationLink(value: account.id) {
+                                    VStack(alignment: .leading) {
+                                        Text(account.name)
+                                            .font(.headline)
+                                        Text(account.amount.formatted(.number.precision(.fractionLength(2))))
+                                    }
                                 }
                             }
-                        }
-                        .onDelete { indexSet in
-                            Task {
-                                await viewModel.deleteAccount(at: indexSet, session: session)
+                            .onDelete { indexSet in
+                                Task {
+                                    await viewModel.deleteAccount(at: indexSet, session: session)
+                                }
                             }
-                        }
 
-                        Button("Créer un compte") {
-                            navigateToCreateFinancialAccount = true
+                            AUButton(title: "Create a financial account", style: .ghost, width: 200) {
+                                navigateToCreateFinancialAccount = true
+                            }.buttonStyle(.bordered)
                         }
-                        .buttonStyle(.borderedProminent)
                     }
                 }
             }

@@ -12,6 +12,7 @@ struct AUButton: View {
     var width: CGFloat? = nil
     var height: CGFloat = 54
     let action: () -> Void
+    var fontSize: CGFloat = 15
 
     enum AUButtonStyle { case primary, ghost }
 
@@ -23,7 +24,7 @@ struct AUButton: View {
                         .tint(style == .primary ? Color.aurenBackground : Color.aurenGold)
                 } else {
                     Text(title)
-                        .font(.custom("Inter", size: 15))
+                        .font(.custom("Inter", size: fontSize))
                         .fontWeight(style == .primary ? .semibold : .regular)
                         .foregroundColor(style == .primary ? Color.aurenBackground : Color.aurenGold)
                 }

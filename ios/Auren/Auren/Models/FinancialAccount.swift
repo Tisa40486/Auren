@@ -8,7 +8,7 @@
 
 struct FinancialAccount: Codable, Identifiable {
     let id: Int
-    let amount: Int
+    let amount: Double
     let userId: Int
     let name: String
     let pinCode: String

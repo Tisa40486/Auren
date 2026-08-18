@@ -18,7 +18,7 @@ class AccountOut(BaseModel):
     id: int
     name: str
     userId: int
-    amount: int
+    amount: float
     user: UserOut
     
     class Config:

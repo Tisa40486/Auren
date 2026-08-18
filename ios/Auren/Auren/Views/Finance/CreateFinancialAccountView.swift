@@ -12,52 +12,47 @@ struct CreateFinancialAccountView: View {
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        Form {
-            Section(header: Text("Account Informations")) {
-                TextField("Account name", text: $viewModel.name)
-                    .autocorrectionDisabled()
-            }
+        ZStack {
+            Color.aurenBackground.ignoresSafeArea()
 
-            Section(header: Text("Code PIN")) {
-                SecureField("Code PIN", text: $viewModel.pinCode)
-                    .keyboardType(.numberPad)
+            VStack(spacing: 32) {
+                Spacer(minLength: 40)
 
-                SecureField("Confirm Code PIN", text: $viewModel.confirm_pinCode)
-                    .keyboardType(.numberPad)
-            }
+                VStack(spacing: 8) {
+                    Text("New Bank Account")
+                        .font(.custom("Fraunces", size: 34))
+                        .foregroundColor(.aurenTextPrimary)
+                        .bold()
+                }
 
-            if let error = viewModel.errorMessage {
-                Section {
+                VStack(spacing: 16) {
+                    AUInput(placeholder: "Account Name", text: $viewModel.name, icon: "banknote")
+                        .textInputAutocapitalization(.never)
+
+                    AUInput(placeholder: "Code PIN", text: $viewModel.pinCode, isPin: true, icon: "lock.fill")
+                        .textInputAutocapitalization(.never)
+
+                    AUInput(placeholder: "Code PIN confirmation", text: $viewModel.confirm_pinCode, isPin: true, icon: "lock")
+                        .textInputAutocapitalization(.never)
+                }
+
+                if let error = viewModel.errorMessage {
                     Text(error)
-                        .foregroundColor(.red)
-                        .font(.footnote)
+                        .font(.custom("Inter", size: 13))
+                        .foregroundColor(.aurenNegative)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
-            }
 
-            Section {
-                Button {
-                    Task {
-                            await viewModel.createBankAccount(session: session)
-                            if viewModel.errorMessage == nil {
-                                dismiss()
-                            }
-                        }
+                Spacer()
+
+                
+                AUButton(title: "Create Account", style: .ghost, width: 200) {
+                    Task{
+                        await viewModel.createBankAccount(session: session, )
                     }
-                label: {
-                    if viewModel.isLoading {
-                        HStack {
-                            Spacer()
-                            ProgressView()
-                            Spacer()
-                        }
-                    } else {
-                        Text("Create Account")
-                            .frame(maxWidth: .infinity)
-                    }
-                }
-                .disabled(viewModel.isLoading)
+                }.buttonStyle(.bordered)
             }
+            .padding()
         }
-        .navigationTitle("new Account")
     }
 }

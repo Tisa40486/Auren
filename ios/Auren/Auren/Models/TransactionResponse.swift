@@ -10,7 +10,7 @@ struct TransactionResponse: Identifiable, Codable {
     let id: Int
     let transactionType: TransactionType
     let accountId: Int
-    let amount: Int
+    let amount: Double
     let createdAt: Date
     let comment: String
 }
