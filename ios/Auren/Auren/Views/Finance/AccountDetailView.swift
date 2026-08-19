@@ -18,9 +18,12 @@ struct AccountDetailView: View {
     private func amountColor(for amount: Double) -> Color {
         amount >= 0 ? .green : .red
     }
+
+
     private func commentText(for comment: String) -> String {
         comment.isEmpty ? "No comment" : comment
     }
+
         
         private func transactionColor(for type: TransactionType) -> Color {
             switch type {
@@ -73,6 +76,7 @@ struct AccountDetailView: View {
                     Text("\(account.amount.formatted(.number.precision(.fractionLength(2)))) €")
                         .font(.title2)
                         .foregroundColor(amountColor(for: account.amount))
+                    
                     AUButton(title: "Add a transaction", style: .ghost, width: 150, fontSize: 18) {
                         navigateToCreateTransaction = true
                     }.buttonStyle(.bordered)
@@ -106,7 +110,11 @@ struct AccountDetailView: View {
                                     Text("\(commentText(for: transaction.comment))")
                                         .font(.caption)
                                         .foregroundColor(.gray)
-                                    
+                                    CategoryChip(
+                                        name: viewModel.category(for: transaction.categoryId)?.name ?? "Unknown",
+                                        icon: viewModel.category(for: transaction.categoryId)?.icon ?? "questionmark.circle",
+                                        colorHex: viewModel.category(for: transaction.categoryId)?.color  ?? "8A867D"
+                                    )
                                     Text(transaction.createdAt.formatted())
                                         .font(.caption2)
                                         .foregroundColor(.gray)
@@ -127,6 +135,7 @@ struct AccountDetailView: View {
             .task {
                 await viewModel.loadAccount(session: session.self)
                 await viewModel.loadTransactions(session: session.self)
+                await viewModel.loadCategories()
 
             }
             .navigationDestination(isPresented: $navigateToCreateTransaction) {

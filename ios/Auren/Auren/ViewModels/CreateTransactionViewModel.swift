@@ -7,15 +7,30 @@ class CreateTransactionViewModel: ObservableObject {
 
     @Published var amountText: String = ""
     @Published var commentText: String = ""
+    @Published var categoryTransactionId: Int?
     @Published var transactionType: TransactionType = .deposit
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
     @Published var lastTransaction: TransactionResponse?
+    @Published var allCategories: [CategoryTransaction] = []
 
     private let apiClient = APIClient.shared
 
     init(accountId: Int) {
         self.accountId = accountId
+    }
+    
+    var filteredCategories: [CategoryTransaction] {
+        allCategories.filter { category in
+            switch transactionType {
+            case .deposit:
+                return category.type == .income
+            case .withdrawal:
+                return category.type == .expense
+            case .transfer:
+                return category.type == .expense || category.type == .income
+            }
+        }
     }
 
     func createTransaction() async {
@@ -37,7 +52,8 @@ class CreateTransactionViewModel: ObservableObject {
                 accountId: accountId,
                 amount: amount,
                 transactionType: transactionType,
-                comment: commentText
+                comment: commentText,
+                categoryId: categoryTransactionId
             )
             let transaction: TransactionResponse = try await apiClient.request(
                 endpoint: "transaction",
@@ -58,11 +74,26 @@ class CreateTransactionViewModel: ObservableObject {
 
         isLoading = false
     }
+    
+    func loadCategories() async {
+        do {
+            let categories: [CategoryTransaction] = try await apiClient.request(
+                endpoint: "transaction/categories",
+                method: "GET"
+            )
+            self.allCategories = categories
+        } catch {
+            print("Load Categories Error: \(error)")
+        }
+    }
 }
+
+
 
 struct CreateTransactionRequest: Codable {
     let accountId: Int
     let amount: Double
     let transactionType: TransactionType
     let comment: String
+    let categoryId: Int?
 }

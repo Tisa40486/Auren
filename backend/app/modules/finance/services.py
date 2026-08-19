@@ -1,21 +1,14 @@
 from app.modules.finance.models import Account
 from app.modules.finance.schemas import AccountCreate
-from passlib.context import CryptContext
 from sqlalchemy.orm import Session, joinedload
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-def hash_pinCode(pinCode: str) -> str:
-    return pwd_context.hash(pinCode)
 
 def create_account(db: Session, account: AccountCreate) -> Account:
-    hashed_pin = hash_pinCode(account.pinCode)
     
     db_account = Account(
         userId = account.userId,
         name = account.name,
         amount = 0,
-        pinCode = hashed_pin
         )
     
     db.add(db_account)

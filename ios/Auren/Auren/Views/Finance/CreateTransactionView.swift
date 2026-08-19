@@ -20,13 +20,19 @@ struct CreateTransactionView: View {
                 Picker("Type", selection: $viewModel.transactionType) {
                     Text("Deposit").tag(TransactionType.deposit)
                     Text("Withdraw").tag(TransactionType.withdrawal)
-                    
                 }
 
                 TextField("Amount", text: $viewModel.amountText)
                     .keyboardType(.decimalPad)
-                
+
                 TextField("Comment", text: $viewModel.commentText)
+
+                Picker("Category", selection: $viewModel.categoryTransactionId) {
+                    Text("Select a category").tag(nil as Int?)
+                    ForEach(viewModel.filteredCategories) { category in
+                        Text(category.name).tag(category.id as Int?)
+                }
+                }
             }
 
             if let error = viewModel.errorMessage {
@@ -59,6 +65,9 @@ struct CreateTransactionView: View {
                 }
                 .disabled(viewModel.isLoading)
             }
+        }
+        .task {
+            await viewModel.loadCategories()
         }
         .navigationTitle("New Transaction")
     }

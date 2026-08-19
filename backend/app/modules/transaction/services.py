@@ -1,8 +1,8 @@
 from app.modules.finance.models import Account
 from app.modules.log.services import create_log
-from app.modules.transaction.models import Transaction
-from app.modules.transaction.schemas import TransactionCreate
-from app.shared.enums import ActionType, TransactionType
+from app.modules.transaction.models import Transaction, TransactionCategory
+from app.modules.transaction.schemas import TransactionCreate, TransactionCategoryCreate
+from app.shared.enums import ActionType, TransactionType, CategoryType
 from fastapi import HTTPException
 from sqlalchemy.orm import Session, joinedload
 
@@ -22,7 +22,8 @@ def create_transaction(db: Session, tran: TransactionCreate) -> Transaction:
             accountId=tran.accountId,
             amount=tran.amount,
             transactionType=tran.transactionType,
-            comment = tran.comment
+            comment = tran.comment,
+            categoryId = tran.categoryId
         )
         db.add(db_tran)
         db.commit()
@@ -45,9 +46,36 @@ def create_transaction(db: Session, tran: TransactionCreate) -> Transaction:
         )
         raise
 
+def create_transaction_categories(db: Session, trancat: TransactionCategoryCreate) -> TransactionCategory:
+    
+    db_trancat = TransactionCategory(
+        name = trancat.name,
+        type = trancat.transactionType,
+        color = trancat.color,
+        icon = trancat.color
+    )
+    db.add(db_trancat)
+    db.commit()
+    db.refresh(db_trancat)
+    return db_trancat
 
 def get_all_transaction(db: Session):
     return db.query(Transaction).all()
 
 def get_transaction_By_AccountId(db: Session, account_id: int):
- return db.query(Transaction).options(joinedload(Transaction.account)).filter(Transaction.accountId == account_id).all()
+    return db.query(Transaction).options(joinedload(Transaction.account)).filter(Transaction.accountId == account_id).all()
+
+def get_all_transaction_categories(db: Session):
+    return db.query(TransactionCategory).all()
+
+def get_transaction_categories_by_id(db: Session, id : int):
+    return db.query(TransactionCategory).filter(TransactionCategory.id == id).all()
+
+def get_all_transaction_categories_Income(db: Session):
+    return db.query(TransactionCategory).filter(TransactionCategory.type == CategoryType.INCOME)
+
+def get_all_transaction_categories_Expense(db: Session):
+    return db.query(TransactionCategory).filter(TransactionCategory.type == CategoryType.EXPENSE)
+
+def get_all_transaction_categories_Both(db: Session):
+    return db.query(TransactionCategory).filter(TransactionCategory.type == CategoryType.BOTH)

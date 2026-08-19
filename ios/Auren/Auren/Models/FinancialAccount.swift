@@ -11,6 +11,4 @@ struct FinancialAccount: Codable, Identifiable {
     let amount: Double
     let userId: Int
     let name: String
-    let pinCode: String
 }
-

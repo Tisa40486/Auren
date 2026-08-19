@@ -4,23 +4,22 @@ import Combine
 @MainActor
 class CreateFinancialAccountViewModel: ObservableObject {
     @Published var name: String = ""
-    @Published var pinCode: String = ""
-    @Published var confirm_pinCode: String = ""
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
 
     private let apiClient = APIClient.shared
 
-    func createBankAccount(session: SessionManager) async {
-        guard !name.isEmpty, !pinCode.isEmpty, !confirm_pinCode.isEmpty else {
+    func createBankAccount(session: SessionManager) async -> Bool {
+        guard !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             errorMessage = "Please fill in all the fields"
-            return
+            return false
         }
-        
+
         guard let currentUser = session.currentUser else {
             errorMessage = "User not connected"
-            return
+            return false
         }
+
         isLoading = true
         errorMessage = nil
 
@@ -28,25 +27,26 @@ class CreateFinancialAccountViewModel: ObservableObject {
             let payload = CreateBankAccountRequest(
                 name: name,
                 userId: currentUser.id,
-                amount: 0,
-                pinCode: pinCode,
-                confirm_pinCode: confirm_pinCode
+                amount: 0
             )
-            let account: FinancialAccount = try await apiClient.request(
+
+            let _: FinancialAccount = try await apiClient.request(
                 endpoint: "finance",
                 method: "POST",
                 body: payload
             )
+
+            isLoading = false
+            return true
+
+        } catch {
+            print("Bank Create Error: \(error)")
+
+            errorMessage = "Unable to create bank account"
+            isLoading = false
+
+            return false
         }
-        catch {
-            if let decodingError = error as? DecodingError {
-                print("Decoding Error: \(decodingError)")
-            } else {
-                print("Bank Create Error: \(error)")
-            }
-            errorMessage = "Incorrect credentials or unknown account"
-        }
-        isLoading = false
     }
 }
 
@@ -54,6 +54,4 @@ struct CreateBankAccountRequest: Codable {
     let name: String
     let userId: Int
     let amount: Int
-    let pinCode: String
-    let confirm_pinCode: String
 }

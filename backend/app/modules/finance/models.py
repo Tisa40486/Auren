@@ -10,6 +10,5 @@ class Account(Base):
     userId = Column(Integer, ForeignKey("users.id"))
     name = Column(String)
     amount = Column(Float)
-    pinCode = Column(String)
     is_active = Column(Boolean, default=True, nullable=False)
     user = relationship("User")

@@ -5,6 +5,7 @@ import Combine
 class AccountDetailViewModel: ObservableObject {
     @Published var account: FinancialAccountResponse?
     @Published var transactions: [TransactionResponse] = []
+    @Published var allCategories: [CategoryTransaction] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
 
@@ -50,5 +51,20 @@ class AccountDetailViewModel: ObservableObject {
            self.errorMessage = "Erreur : \(error.localizedDescription)"
        }
         isLoading = false
+    }
+    func loadCategories() async {
+        do {
+            let categories: [CategoryTransaction] = try await apiClient.request(
+                endpoint: "transaction/categories",
+                method: "GET"
+            )
+            self.allCategories = categories
+        } catch {
+            print("Load Categories Error: \(error)")
+        }
+    }
+    
+    func category(for id: Int) -> CategoryTransaction? {
+        allCategories.first { $0.id == id }
     }
 }

@@ -26,7 +26,10 @@ extension Color {
 
 extension Color {
     init(hex: String) {
-        let scanner = Scanner(string: hex)
+        let hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: "#", with: "")
+
+        let scanner = Scanner(string: hexSanitized)
         var rgb: UInt64 = 0
         scanner.scanHexInt64(&rgb)
 

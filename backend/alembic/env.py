@@ -3,6 +3,13 @@ from logging.config import fileConfig
 from alembic import context
 from app.core.config import settings
 from app.core.database import Base
+
+from app.modules.users.models import User
+from app.modules.finance.models import Account
+from app.modules.transaction.models import Transaction
+from app.modules.transaction.models import TransactionCategory
+from app.modules.log.models import Log
+
 from sqlalchemy import engine_from_config, pool
 
 # this is the Alembic Config object, which provides

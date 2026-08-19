@@ -2,7 +2,7 @@ import Foundation
 
 class APIClient {
     static let shared = APIClient()
-    private let baseURL = URL(string: "http://172.20.10.2:8000/")!
+    private let baseURL = URL(string: "http://192.168.1.40:8000/")!
    
     func request<T: Decodable>(endpoint: String, method: String = "GET", body: Encodable? = nil, formBody: [String: String]? = nil, token: String? = nil) async throws -> T {
         var request = URLRequest(url: baseURL.appendingPathComponent(endpoint))

@@ -32,7 +32,7 @@ struct HomeView: View {
                 }
             }
             .navigationDestination(isPresented: $navigateToCreateFinancialAccount) {
-                // CreateFinancialAccountView() — à créer si pas encore fait
+                
             }
         }
     }
