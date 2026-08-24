@@ -38,7 +38,7 @@ struct CreateTransactionView: View {
             if let error = viewModel.errorMessage {
                 Section {
                     Text(error)
-                        .foregroundColor(.red)
+                        .foregroundStyle(Color.aurenNegative)
                         .font(.footnote)
                 }
             }
@@ -71,4 +71,11 @@ struct CreateTransactionView: View {
         }
         .navigationTitle("New Transaction")
     }
+}
+
+#Preview {
+    NavigationStack {
+        CreateTransactionView(accountId: 1)
+    }
+    .environmentObject(SessionManager())
 }

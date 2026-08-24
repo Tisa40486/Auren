@@ -27,3 +27,12 @@ struct CategoryChip: View {
         .clipShape(Capsule())
     }
 }
+
+#Preview {
+    CategoryChip(
+        name: "Groceries",
+        icon: "cart.fill",
+        colorHex: "4CAF50"
+    )
+    .padding()
+}

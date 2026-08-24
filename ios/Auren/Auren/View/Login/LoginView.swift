@@ -74,3 +74,10 @@ struct LoginView: View {
         }
     }
 }
+
+#Preview {
+    NavigationStack {
+        LoginView()
+    }
+    .environmentObject(SessionManager())
+}

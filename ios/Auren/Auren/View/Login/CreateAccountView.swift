@@ -58,3 +58,8 @@ struct CreateAccountView: View {
         }
     }
 }
+
+#Preview {
+    CreateAccountView()
+        .environmentObject(SessionManager())
+}

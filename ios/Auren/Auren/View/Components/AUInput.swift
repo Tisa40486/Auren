@@ -48,3 +48,15 @@ struct AUInput: View {
     
 
 }
+
+#Preview {
+    @Previewable @State var text = ""
+
+    AUInput(
+        placeholder: "Email",
+        text: $text,
+        icon: "envelope"
+    )
+    .padding()
+    .background(Color.aurenBackground)
+}

@@ -57,10 +57,14 @@ struct CreateFinancialAccountView: View {
                         }
                     }
                 }
-                .buttonStyle(.bordered)
                 .disabled(viewModel.isLoading)
             }
             .padding()
         }
     }
+}
+
+#Preview {
+    CreateFinancialAccountView()
+        .environmentObject(SessionManager())
 }

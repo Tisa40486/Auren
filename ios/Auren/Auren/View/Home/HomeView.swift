@@ -4,10 +4,11 @@ struct HomeView: View {
     @EnvironmentObject var session: SessionManager
     @StateObject private var viewModel = HomeViewModel()
     @State private var navigateToCreateFinancialAccount = false
-    
+    @State private var showLogoutConfirmation = false
+    @State private var navigateToSettings = false
+
     var body: some View {
-        
-        ZStack{
+        ZStack {
             Color.aurenBackground.ignoresSafeArea()
             VStack(spacing: 20) {
                 if viewModel.isLoading {
@@ -20,9 +21,6 @@ struct HomeView: View {
                         Text("Overview of the upcoming account here")
                         // TODO: AccountOverviewView
                     }
-                    AUButton(title: "Logout", style: .ghost, width: 75) {
-                        session.logout()
-                    }.buttonStyle(.bordered)
                 }
             }
             .padding()
@@ -35,5 +33,31 @@ struct HomeView: View {
                 
             }
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button() {
+                    session.logout()
+                } label: {
+                    Label("Log Out", systemImage: "figure.walk.departure")
+                }
+            }
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    navigateToSettings = true
+                } label: {
+                    Label("Go to settings", systemImage: "gearshape.fill")
+                }
+            }
+        }
+        .navigationDestination(isPresented: $navigateToSettings) {
+            SettingsView()
+        }
+        }
     }
+
+#Preview {
+    NavigationStack {
+        HomeView()
+    }
+    .environmentObject(SessionManager())
 }

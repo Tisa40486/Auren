@@ -12,7 +12,7 @@ class LoginViewModel: ObservableObject {
 
     func login(session: SessionManager) async {
         guard !username.isEmpty, !password.isEmpty else {
-            errorMessage = "Merci de remplir tous les champs"
+            errorMessage = "Please fill all the fields"
             return
         }
 

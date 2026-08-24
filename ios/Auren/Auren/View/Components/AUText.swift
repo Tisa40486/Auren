@@ -36,3 +36,9 @@ struct AUText: View {
         }
     }
 }
+
+#Preview {
+    AUText(text: "Account balance", style: .title)
+        .padding()
+        .background(Color.aurenBackground)
+}

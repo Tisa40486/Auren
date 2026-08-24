@@ -1,24 +1,19 @@
-//
-//  AurenApp.swift
-//  Auren
-//
-//  Created by Mattis Lefranc Adam on 28.07.2026.
-//
-
 import SwiftUI
 
 @main
 struct AurenApp: App {
     @StateObject private var session = SessionManager()
+    @AppStorage("appTheme") private var selectedTheme = AppTheme.dark.rawValue
+
+    private var preferredColorScheme: ColorScheme? {
+        AppTheme(rawValue: selectedTheme)?.colorScheme ?? .dark
+    }
 
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
-                RootView()
-            }
-            .environmentObject(session)
+            RootView() // plus de NavigationStack ici
+                .environmentObject(session)
+                .preferredColorScheme(preferredColorScheme)
         }
     }
 }
-
-

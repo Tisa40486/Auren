@@ -1,11 +1,5 @@
-//
-//  ContentView.swift
-//  Auren
-//
-//  Created by Mattis Lefranc Adam on 28.07.2026.
-//
-
 import SwiftUI
+import FoundationModels
 
 struct ContentView: View {
     var body: some View {
