@@ -1,24 +1,17 @@
 from app.modules.users.schemas import UserOut
-from pydantic import BaseModel, model_validator
+from pydantic import BaseModel
 
 
 class AccountCreate(BaseModel):
     name: str
     userId: int
-    amount: int
-    pinCode: str
-    confirm_pinCode: str
-    @model_validator(mode="after")
-    def check_passwords_match(self):
-        if self.pinCode != self.confirm_pinCode:
-            raise ValueError("Pin code and confirm pin code must be the same, try again")
-        return self
+    amount: float
     
 class AccountOut(BaseModel):
     id: int
     name: str
     userId: int
-    amount: int
+    amount: float
     user: UserOut
     
     class Config:

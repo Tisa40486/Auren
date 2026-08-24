@@ -10,3 +10,8 @@ class TransactionType(str, enum.Enum):
     DEPOSIT = "deposit"
     WITHDRAWAL = "withdrawal"
     TRANSFER = "transfer"
+    
+class CategoryType(str, enum.Enum):
+    EXPENSE = "expense"
+    INCOME = "income"
+    BOTH = "both"
