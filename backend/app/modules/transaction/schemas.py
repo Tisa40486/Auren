@@ -1,6 +1,6 @@
 import datetime as dt
 
-from app.shared.enums import TransactionType, CategoryType
+from app.shared.enums import CategoryType, TransactionType
 from pydantic import BaseModel, Field
 
 
