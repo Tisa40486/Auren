@@ -3,6 +3,7 @@ import SwiftUI
 struct CreateAccountView: View {
     @StateObject private var viewModel = CreateAccountViewModel()
     @EnvironmentObject var session: SessionManager
+    @EnvironmentObject private var l10n: LocalizationManager
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
@@ -13,26 +14,26 @@ struct CreateAccountView: View {
                 Spacer(minLength: 40)
 
                 VStack(spacing: 8) {
-                    Text("Create Account")
+                    Text(l10n.tr(.createAccountTitle))
                         .font(.custom("Fraunces", size: 34))
                         .foregroundColor(.aurenTextPrimary)
                         .bold()
 
-                    Text("Create your account to continue")
+                    Text(l10n.tr(.createAccountSubtitle))
                         .font(.custom("Fraunces", size: 16))
                         .foregroundColor(.accentColor)
                 }
 
                 VStack(spacing: 16) {
-                    AUInput(placeholder: "Username", text: $viewModel.username, icon: "person")
+                    AUInput(placeholder: l10n.tr(.username), text: $viewModel.username, icon: "person")
                         .autocapitalization(.none)
 
-                    AUInput(placeholder: "Email", text: $viewModel.email, icon: "envelope")
+                    AUInput(placeholder: l10n.tr(.email), text: $viewModel.email, icon: "envelope")
                         .autocapitalization(.none)
 
-                    AUInput(placeholder: "Password", text: $viewModel.password, isSecure: true, icon: "lock")
+                    AUInput(placeholder: l10n.tr(.password), text: $viewModel.password, isSecure: true, icon: "lock")
 
-                    AUInput(placeholder: "Confirm Password", text: $viewModel.confirm_password, isSecure: true, icon: "lock")
+                    AUInput(placeholder: l10n.tr(.confirmPassword), text: $viewModel.confirm_password, isSecure: true, icon: "lock")
                 }
 
                 if let error = viewModel.errorMessage {
@@ -42,7 +43,7 @@ struct CreateAccountView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
 
-                AUButton(title: "Create Account", isLoading: viewModel.isLoading, width: 150) {
+                AUButton(title: l10n.tr(.createAccountButton), isLoading: viewModel.isLoading, width: 180) {
                     Task {
                         await viewModel.createAccount(session: session)
                         if viewModel.errorMessage == nil {
@@ -62,4 +63,5 @@ struct CreateAccountView: View {
 #Preview {
     CreateAccountView()
         .environmentObject(SessionManager())
+        .environmentObject(LocalizationManager.shared)
 }

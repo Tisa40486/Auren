@@ -2,8 +2,8 @@ import SwiftUI
 
 struct CreateFinancialAccountView: View {
     @StateObject private var viewModel = CreateFinancialAccountViewModel()
-
     @EnvironmentObject var session: SessionManager
+    @EnvironmentObject private var l10n: LocalizationManager
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -15,7 +15,7 @@ struct CreateFinancialAccountView: View {
                 Spacer(minLength: 40)
 
                 VStack(spacing: 8) {
-                    Text("New Bank Account")
+                    Text(l10n.tr(.newBankAccount))
                         .font(.custom("Fraunces", size: 34))
                         .foregroundColor(.aurenTextPrimary)
                         .bold()
@@ -23,7 +23,7 @@ struct CreateFinancialAccountView: View {
 
                 VStack(spacing: 16) {
                     AUInput(
-                        placeholder: "Account Name",
+                        placeholder: l10n.tr(.accountName),
                         text: $viewModel.name,
                         icon: "banknote"
                     )
@@ -43,9 +43,9 @@ struct CreateFinancialAccountView: View {
                 Spacer()
 
                 AUButton(
-                    title: viewModel.isLoading ? "Creating..." : "Create Account",
+                    title: viewModel.isLoading ? l10n.tr(.creating) : l10n.tr(.createAccountButton),
                     style: .ghost,
-                    width: 200
+                    width: 180
                 ) {
                     Task {
                         let success = await viewModel.createBankAccount(
@@ -67,4 +67,5 @@ struct CreateFinancialAccountView: View {
 #Preview {
     CreateFinancialAccountView()
         .environmentObject(SessionManager())
+        .environmentObject(LocalizationManager.shared)
 }

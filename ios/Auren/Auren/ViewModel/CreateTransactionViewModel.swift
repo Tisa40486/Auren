@@ -19,7 +19,7 @@ class CreateTransactionViewModel: ObservableObject {
     init(accountId: Int) {
         self.accountId = accountId
     }
-    
+
     var filteredCategories: [CategoryTransaction] {
         allCategories.filter { category in
             switch transactionType {
@@ -33,14 +33,14 @@ class CreateTransactionViewModel: ObservableObject {
         }
     }
 
-    func createTransaction() async {
+    func createTransaction(session: SessionManager) async {
         guard !amountText.isEmpty else {
-            errorMessage = "Please enter an amount"
+            errorMessage = tr(.errEnterAmount)
             return
         }
 
         guard let amount = Double(amountText.replacingOccurrences(of: ",", with: ".")), amount > 0 else {
-            errorMessage = "Invalid amount"
+            errorMessage = tr(.errInvalidAmount)
             return
         }
 
@@ -58,7 +58,8 @@ class CreateTransactionViewModel: ObservableObject {
             let transaction: TransactionResponse = try await apiClient.request(
                 endpoint: "transaction",
                 method: "POST",
-                body: payload
+                body: payload,
+                token: session.token
             )
             lastTransaction = transaction
             amountText = ""
@@ -69,26 +70,26 @@ class CreateTransactionViewModel: ObservableObject {
             } else {
                 print("Transaction Create Error: \(error)")
             }
-            errorMessage = "Failed to create transaction"
+            errorMessage = tr(.errCreateTransaction)
         }
 
         isLoading = false
     }
-    
-    func loadCategories() async {
+
+    func loadCategories(session: SessionManager) async {
         do {
             let categories: [CategoryTransaction] = try await apiClient.request(
                 endpoint: "transaction/categories",
-                method: "GET"
+                method: "GET",
+                token: session.token
             )
             self.allCategories = categories
         } catch {
-            print("Load Categories Error: \(error)")
+            print("Load Categories Error: \(error.localizedDescription)")
+            errorMessage = tr(.errLoadCategories)
         }
     }
 }
-
-
 
 struct CreateTransactionRequest: Codable {
     let accountId: Int

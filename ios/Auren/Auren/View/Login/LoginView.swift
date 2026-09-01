@@ -1,15 +1,9 @@
-//
-//  LoginView.swift
-//  Auren
-//
-//  Created by Mattis Lefranc Adam on 28.07.2026.
-//
-
 import SwiftUI
 
 struct LoginView: View {
     @StateObject private var viewModel = LoginViewModel()
     @EnvironmentObject var session: SessionManager
+    @EnvironmentObject private var l10n: LocalizationManager
     @State private var navigateToCreateAccount = false
 
     var body: some View {
@@ -19,25 +13,23 @@ struct LoginView: View {
             VStack(spacing: 32) {
                 Spacer(minLength: 40)
 
-                
                 VStack(spacing: 8) {
                     Text("Auren")
                         .font(.custom("Fraunces", size: 34))
                         .foregroundColor(.aurenTextPrimary)
 
-                    Text("One app to manage your life.")
+                    Text(l10n.tr(.appTagline))
                         .font(.custom("Inter", size: 14))
                         .foregroundColor(.aurenTextSecondary)
                         .italic()
                 }
 
-                
                 VStack(spacing: 16) {
-                    AUInput(placeholder: "Username", text: $viewModel.username, icon: "person")
+                    AUInput(placeholder: l10n.tr(.username), text: $viewModel.username, icon: "person")
                         .autocapitalization(.none)
-                    
-                    AUInput(placeholder: "Password", text: $viewModel.password, isSecure: true, icon: "lock")
-                    
+
+                    AUInput(placeholder: l10n.tr(.password), text: $viewModel.password, isSecure: true, icon: "lock")
+
                     if let error = viewModel.errorMessage {
                         Text(error)
                             .font(.custom("Inter", size: 13))
@@ -46,22 +38,21 @@ struct LoginView: View {
                     }
                 }
 
-                AUButton(title: "Connect", isLoading: viewModel.isLoading) {
+                AUButton(title: l10n.tr(.connect), isLoading: viewModel.isLoading) {
                     Task {
                         await viewModel.login(session: session)
                     }
                 }
 
-                
                 HStack {
                     Rectangle().fill(Color.aurenBorder).frame(height: 1)
-                    Text("or")
+                    Text(l10n.tr(.orText))
                         .font(.custom("Inter", size: 12))
                         .foregroundColor(.aurenTextSecondary)
                     Rectangle().fill(Color.aurenBorder).frame(height: 1)
                 }
 
-                AUButton(title: "Create an account", style: .ghost, width: 200) {
+                AUButton(title: l10n.tr(.createAnAccount), style: .ghost, width: 190) {
                     navigateToCreateAccount = true
                 }
 
@@ -80,4 +71,5 @@ struct LoginView: View {
         LoginView()
     }
     .environmentObject(SessionManager())
+    .environmentObject(LocalizationManager.shared)
 }

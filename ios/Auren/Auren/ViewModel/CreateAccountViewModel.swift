@@ -1,10 +1,3 @@
-//
-//  CreateAccountViewModel.swift
-//  Auren
-//
-//  Created by Mattis Lefranc Adam on 28.07.2026.
-//
-
 import Foundation
 import Combine
 
@@ -21,7 +14,7 @@ class CreateAccountViewModel: ObservableObject {
 
     func createAccount(session: SessionManager) async {
         guard !username.isEmpty, !email.isEmpty, !password.isEmpty else {
-            errorMessage = "Please fill in all the fields"
+            errorMessage = tr(.errFillAllFields)
             return
         }
 
@@ -49,7 +42,7 @@ class CreateAccountViewModel: ObservableObject {
             } else {
                 print("Login Error: \(error)")
             }
-            errorMessage = "Incorrect credentials or unknown user"
+            errorMessage = tr(.errInvalidCredentials)
         }
         isLoading = false
     }
@@ -61,4 +54,3 @@ struct CreateAccountRequest: Codable {
     let password: String
     let confirm_password: String
 }
-

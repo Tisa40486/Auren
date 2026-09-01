@@ -1,13 +1,9 @@
-//
-//  CreateTransactionView.swift
-//  Auren
-//
-
 import SwiftUI
 
 struct CreateTransactionView: View {
     @StateObject private var viewModel: CreateTransactionViewModel
     @EnvironmentObject var session: SessionManager
+    @EnvironmentObject private var l10n: LocalizationManager
     @Environment(\.dismiss) private var dismiss
 
     init(accountId: Int) {
@@ -16,22 +12,22 @@ struct CreateTransactionView: View {
 
     var body: some View {
         Form {
-            Section(header: Text("Transaction")) {
-                Picker("Type", selection: $viewModel.transactionType) {
-                    Text("Deposit").tag(TransactionType.deposit)
-                    Text("Withdraw").tag(TransactionType.withdrawal)
+            Section(header: Text(l10n.tr(.transaction))) {
+                Picker(l10n.tr(.type), selection: $viewModel.transactionType) {
+                    Text(l10n.tr(.deposit)).tag(TransactionType.deposit)
+                    Text(l10n.tr(.withdrawal)).tag(TransactionType.withdrawal)
                 }
 
-                TextField("Amount", text: $viewModel.amountText)
+                TextField(l10n.tr(.amount), text: $viewModel.amountText)
                     .keyboardType(.decimalPad)
 
-                TextField("Comment", text: $viewModel.commentText)
+                TextField(l10n.tr(.comment), text: $viewModel.commentText)
 
-                Picker("Category", selection: $viewModel.categoryTransactionId) {
-                    Text("Select a category").tag(nil as Int?)
+                Picker(l10n.tr(.category), selection: $viewModel.categoryTransactionId) {
+                    Text(l10n.tr(.selectCategory)).tag(nil as Int?)
                     ForEach(viewModel.filteredCategories) { category in
                         Text(category.name).tag(category.id as Int?)
-                }
+                    }
                 }
             }
 
@@ -46,7 +42,7 @@ struct CreateTransactionView: View {
             Section {
                 Button {
                     Task {
-                        await viewModel.createTransaction()
+                        await viewModel.createTransaction(session: session)
                         if viewModel.errorMessage == nil {
                             dismiss()
                         }
@@ -59,7 +55,7 @@ struct CreateTransactionView: View {
                             Spacer()
                         }
                     } else {
-                        Text("Create Transaction")
+                        Text(l10n.tr(.createTransactionButton))
                             .frame(maxWidth: .infinity)
                     }
                 }
@@ -67,9 +63,9 @@ struct CreateTransactionView: View {
             }
         }
         .task {
-            await viewModel.loadCategories()
+            await viewModel.loadCategories(session: session)
         }
-        .navigationTitle("New Transaction")
+        .navigationTitle(l10n.tr(.newTransaction))
     }
 }
 
@@ -78,4 +74,5 @@ struct CreateTransactionView: View {
         CreateTransactionView(accountId: 1)
     }
     .environmentObject(SessionManager())
+    .environmentObject(LocalizationManager.shared)
 }

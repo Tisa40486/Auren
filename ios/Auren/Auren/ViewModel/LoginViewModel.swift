@@ -12,7 +12,7 @@ class LoginViewModel: ObservableObject {
 
     func login(session: SessionManager) async {
         guard !username.isEmpty, !password.isEmpty else {
-            errorMessage = "Please fill all the fields"
+            errorMessage = tr(.errFillAllFields)
             return
         }
 
@@ -36,11 +36,11 @@ class LoginViewModel: ObservableObject {
         }
         catch {
             if let decodingError = error as? DecodingError {
-                print("Decoding Error:\(decodingError)")
+                print("Decoding Error: \(decodingError)")
             } else {
                 print("Login Error: \(error)")
             }
-            errorMessage = "Incorrect credentials or unknown user"
+            errorMessage = tr(.errInvalidCredentials)
         }
         isLoading = false
     }

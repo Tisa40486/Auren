@@ -3,8 +3,8 @@ import SwiftUI
 struct AccountListView: View {
     @StateObject private var viewModel = AccountListViewModel()
     @State private var navigateToCreateFinancialAccount = false
-
     @EnvironmentObject private var session: SessionManager
+    @EnvironmentObject private var l10n: LocalizationManager
 
     var body: some View {
         ZStack {
@@ -12,13 +12,13 @@ struct AccountListView: View {
 
             content
         }
-        .navigationTitle("Accounts")
+        .navigationTitle(l10n.tr(.accounts))
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
                     navigateToCreateFinancialAccount = true
                 } label: {
-                    Label("Add Account", systemImage: "plus")
+                    Label(l10n.tr(.addAccountButton), systemImage: "plus")
                 }
             }
         }
@@ -33,20 +33,20 @@ struct AccountListView: View {
     @ViewBuilder
     private var content: some View {
         if viewModel.isLoading {
-            ProgressView("Loading accounts…")
+            ProgressView(l10n.tr(.loadingAccounts))
         } else if let error = viewModel.errorMessage {
             ContentUnavailableView(
-                "Unable to Load Accounts",
+                l10n.tr(.unableToLoadAccounts),
                 systemImage: "exclamationmark.triangle",
                 description: Text(error)
             )
         } else if viewModel.accounts.isEmpty {
             ContentUnavailableView {
-                Label("No Accounts Yet", systemImage: "building.columns")
+                Label(l10n.tr(.noAccountsYet), systemImage: "building.columns")
             } description: {
-                Text("Create an account to start tracking your finances.")
+                Text(l10n.tr(.noAccountsDescription))
             } actions: {
-                AUButton(title: "Add Account", width: 200) {
+                AUButton(title: l10n.tr(.addAccountButton), width: 180) {
                     navigateToCreateFinancialAccount = true
                 }
                 .padding(.top, 8)
@@ -62,9 +62,15 @@ struct AccountListView: View {
                                 .font(.headline)
                                 .foregroundStyle(Color.aurenTextPrimary)
 
-                            Text(account.amount, format: .number.precision(.fractionLength(2)))
-                                .font(.subheadline)
-                                .foregroundStyle(Color.aurenTextSecondary)
+                            HStack(alignment: .firstTextBaseline, spacing: 3) {
+                                Text(account.amount, format: .number.precision(.fractionLength(2)))
+                                    .font(.subheadline)
+                                    .foregroundStyle(Color.aurenTextSecondary)
+
+                                Text("€")
+                                    .font(.subheadline)
+                                    .foregroundStyle(Color.aurenGold)
+                            }
                         }
                         .padding(.vertical, 4)
                     }
@@ -85,4 +91,5 @@ struct AccountListView: View {
         AccountListView()
     }
     .environmentObject(SessionManager())
+    .environmentObject(LocalizationManager.shared)
 }

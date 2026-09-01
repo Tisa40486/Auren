@@ -11,12 +11,12 @@ class CreateFinancialAccountViewModel: ObservableObject {
 
     func createBankAccount(session: SessionManager) async -> Bool {
         guard !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            errorMessage = "Please fill in all the fields"
+            errorMessage = tr(.errFillAllFields)
             return false
         }
 
         guard let currentUser = session.currentUser else {
-            errorMessage = "User not connected"
+            errorMessage = tr(.errUserNotLoggedIn)
             return false
         }
 
@@ -42,7 +42,7 @@ class CreateFinancialAccountViewModel: ObservableObject {
         } catch {
             print("Bank Create Error: \(error)")
 
-            errorMessage = "Unable to create bank account"
+            errorMessage = tr(.errCreateBankAccount)
             isLoading = false
 
             return false

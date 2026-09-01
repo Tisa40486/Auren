@@ -1,8 +1,8 @@
 import SwiftUI
 
-// RootView.swift
 struct RootView: View {
     @EnvironmentObject private var session: SessionManager
+    @EnvironmentObject private var l10n: LocalizationManager
 
     var body: some View {
         if session.isAuthenticated {
@@ -11,14 +11,14 @@ struct RootView: View {
                     HomeView()
                 }
                 .tabItem {
-                    Label("Home", systemImage: "house.fill")
+                    Label(l10n.tr(.home), systemImage: "house.fill")
                 }
 
                 NavigationStack {
                     AccountListView()
                 }
                 .tabItem {
-                    Label("Accounts", systemImage: "building.columns.fill")
+                    Label(l10n.tr(.accounts), systemImage: "building.columns.fill")
                 }
             }
         } else {
@@ -32,4 +32,5 @@ struct RootView: View {
 #Preview {
     RootView()
         .environmentObject(SessionManager())
+        .environmentObject(LocalizationManager.shared)
 }

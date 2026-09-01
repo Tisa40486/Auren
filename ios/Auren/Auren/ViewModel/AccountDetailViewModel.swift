@@ -29,15 +29,16 @@ class AccountDetailViewModel: ObservableObject {
             self.account = fetchedAccount
         } catch {
             print("Erreur loadAccount: \(error)")
-            self.errorMessage = "Erreur : \(error.localizedDescription)"
+            self.errorMessage = tr(.errLoadAccounts)
         }
 
         isLoading = false
     }
+
     func loadTransactions(session: SessionManager) async {
         isLoading = true
         errorMessage = nil
-        
+
         do {
             let fetchedTransactions: [TransactionResponse] = try await apiClient.request(
                 endpoint: "transaction/\(self.id)",
@@ -47,23 +48,26 @@ class AccountDetailViewModel: ObservableObject {
             self.transactions = fetchedTransactions.reversed()
         }
         catch {
-           print("Erreur loadAccount: \(error)")
-           self.errorMessage = "Erreur : \(error.localizedDescription)"
+           print("Erreur loadTransactions: \(error)")
+           self.errorMessage = tr(.errLoadTransactions)
        }
         isLoading = false
     }
-    func loadCategories() async {
+
+    func loadCategories(session: SessionManager) async {
         do {
             let categories: [CategoryTransaction] = try await apiClient.request(
                 endpoint: "transaction/categories",
-                method: "GET"
+                method: "GET",
+                token: session.token
             )
             self.allCategories = categories
         } catch {
-            print("Load Categories Error: \(error)")
+            print("Load Categories Error: \(error.localizedDescription)")
+            self.errorMessage = tr(.errLoadCategories)
         }
     }
-    
+
     func category(for id: Int) -> CategoryTransaction? {
         allCategories.first { $0.id == id }
     }

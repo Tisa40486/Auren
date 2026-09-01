@@ -15,7 +15,7 @@ class AccountListViewModel: ObservableObject {
 
     func loadAccounts(session: SessionManager) async {
         guard let user = session.currentUser, let token = session.token else {
-            errorMessage = "User not logged."
+            errorMessage = tr(.errUserNotLoggedIn)
             return
         }
 
@@ -31,15 +31,15 @@ class AccountListViewModel: ObservableObject {
             self.accounts = fetchedAccounts
         } catch {
             print("Erreur loadAccounts: \(error)")
-            self.errorMessage = "Erreur : \(error.localizedDescription)"
+            self.errorMessage = tr(.errLoadAccounts)
         }
 
         isLoading = false
     }
-    
+
     func deleteAccount(at offsets: IndexSet, session: SessionManager) async {
         guard let token = session.token else {
-            errorMessage = "User not logged."
+            errorMessage = tr(.errUserNotLoggedIn)
             return
         }
 
@@ -55,7 +55,7 @@ class AccountListViewModel: ObservableObject {
                 accounts.removeAll { $0.id == account.id }
             } catch {
                 print("Erreur deleteAccount: \(error)")
-                errorMessage = "Error deleting"
+                errorMessage = tr(.errDeleteAccount)
             }
         }
     }
