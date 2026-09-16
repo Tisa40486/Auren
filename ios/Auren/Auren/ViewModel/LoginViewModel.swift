@@ -1,14 +1,12 @@
-import Foundation
 import Combine
+import FirebaseAuth
 
 @MainActor
 class LoginViewModel: ObservableObject {
-    @Published var username: String = ""
-    @Published var password: String = ""
-    @Published var isLoading: Bool = false
+    @Published var username = ""
+    @Published var password = ""
+    @Published var isLoading = false
     @Published var errorMessage: String?
-
-    private let apiClient = APIClient.shared
 
     func login(session: SessionManager) async {
         guard !username.isEmpty, !password.isEmpty else {
@@ -20,38 +18,19 @@ class LoginViewModel: ObservableObject {
         errorMessage = nil
 
         do {
-            let tokenResponse: TokenResponse = try await apiClient.request(
-                endpoint: "auth/login",
-                method: "POST",
-                formBody: ["username": username, "password": password]
+            let result = try await Auth.auth().signIn(
+                withEmail: username,
+                password: password
             )
+            let token = try await result.user.getIDToken()
 
-            let user: User = try await apiClient.request(
-                endpoint: "auth/me",
-                method: "GET",
-                token: tokenResponse.access_token
-            )
-
-            session.login(user: user, token: tokenResponse.access_token)
-        }
-        catch {
-            if let decodingError = error as? DecodingError {
-                print("Decoding Error: \(decodingError)")
-            } else {
-                print("Login Error: \(error)")
-            }
+            session.login(firebaseUser: result.user, token: token)
+            print("[Firebase Auth] Sign-in successful.")
+        } catch {
+            print("[Firebase Auth] Sign-in failed: \(error.localizedDescription)")
             errorMessage = tr(.errInvalidCredentials)
         }
+
         isLoading = false
     }
-}
-
-struct LoginRequest: Codable {
-    let username: String
-    let password: String
-}
-
-struct TokenResponse: Codable {
-    let access_token: String
-    let token_type: String
 }

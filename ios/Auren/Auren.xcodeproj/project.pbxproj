@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C23F9C54305B3668009D551B /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = C23F9C53305B3668009D551B /* FirebaseCore */; };
+		C23F9C58305B3668009D551B /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = C23F9C57305B3668009D551B /* FirebaseDatabase */; };
+		C23F9C73305B4995009D551B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C23F9C72305B4995009D551B /* FirebaseAuth */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		C24D6888301936F000845E85 /* Auren.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Auren.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,16 +42,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C23F9C58305B3668009D551B /* FirebaseDatabase in Frameworks */,
+				C23F9C73305B4995009D551B /* FirebaseAuth in Frameworks */,
+				C23F9C54305B3668009D551B /* FirebaseCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C23F9C71305B4995009D551B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C24D687F301936F000845E85 = {
 			isa = PBXGroup;
 			children = (
 				C24D688A301936F000845E85 /* Auren */,
+				C23F9C71305B4995009D551B /* Frameworks */,
 				C24D6889301936F000845E85 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -78,6 +95,9 @@
 			);
 			name = Auren;
 			packageProductDependencies = (
+				C23F9C53305B3668009D551B /* FirebaseCore */,
+				C23F9C57305B3668009D551B /* FirebaseDatabase */,
+				C23F9C72305B4995009D551B /* FirebaseAuth */,
 			);
 			productName = Auren;
 			productReference = C24D6888301936F000845E85 /* Auren.app */;
@@ -107,6 +127,9 @@
 			);
 			mainGroup = C24D687F301936F000845E85;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C23F9C40305B3668009D551B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C24D6889301936F000845E85 /* Products */;
 			projectDirPath = "";
@@ -363,6 +386,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C23F9C40305B3668009D551B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.19.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C23F9C53305B3668009D551B /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C23F9C40305B3668009D551B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		C23F9C57305B3668009D551B /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C23F9C40305B3668009D551B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		C23F9C72305B4995009D551B /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C23F9C40305B3668009D551B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C24D6880301936F000845E85 /* Project object */;
 }

@@ -1,20 +1,23 @@
-import Foundation
 import Combine
+import FirebaseAuth
 
 @MainActor
 class CreateAccountViewModel: ObservableObject {
-    @Published var username: String = ""
-    @Published var email: String = ""
-    @Published var password: String = ""
-    @Published var confirm_password: String = ""
-    @Published var isLoading: Bool = false
+    @Published var username = ""
+    @Published var email = ""
+    @Published var password = ""
+    @Published var confirm_password = ""
+    @Published var isLoading = false
     @Published var errorMessage: String?
 
-    private let apiClient = APIClient.shared
-
     func createAccount(session: SessionManager) async {
-        guard !username.isEmpty, !email.isEmpty, !password.isEmpty else {
+        guard !username.isEmpty, !email.isEmpty, !password.isEmpty, !confirm_password.isEmpty else {
             errorMessage = tr(.errFillAllFields)
+            return
+        }
+
+        guard password == confirm_password else {
+            errorMessage = tr(.errInvalidCredentials)
             return
         }
 
@@ -22,35 +25,19 @@ class CreateAccountViewModel: ObservableObject {
         errorMessage = nil
 
         do {
-            let payload = CreateAccountRequest(
-                name: username,
-                email: email,
-                password: password,
-                confirm_password: confirm_password
+            let result = try await Auth.auth().createUser(
+                withEmail: email,
+                password: password
             )
-            let user: User = try await apiClient.request(
-                endpoint: "users",
-                method: "POST",
-                body: payload
-            )
+            let token = try await result.user.getIDToken()
 
-            session.login(user: user)
-        }
-        catch {
-            if let decodingError = error as? DecodingError {
-                print("Decoding Error: \(decodingError)")
-            } else {
-                print("Login Error: \(error)")
-            }
+            session.login(firebaseUser: result.user, token: token)
+            print("[Firebase Auth] Account creation successful.")
+        } catch {
+            print("[Firebase Auth] Account creation failed: \(error.localizedDescription)")
             errorMessage = tr(.errInvalidCredentials)
         }
+
         isLoading = false
     }
-}
-
-struct CreateAccountRequest: Codable {
-    let name: String
-    let email: String
-    let password: String
-    let confirm_password: String
 }

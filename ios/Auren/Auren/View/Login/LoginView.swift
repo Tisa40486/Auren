@@ -25,7 +25,7 @@ struct LoginView: View {
                 }
 
                 VStack(spacing: 16) {
-                    AUInput(placeholder: l10n.tr(.username), text: $viewModel.username, icon: "person")
+                    AUInput(placeholder: l10n.tr(.email), text: $viewModel.username, icon: "envelope")
                         .autocapitalization(.none)
 
                     AUInput(placeholder: l10n.tr(.password), text: $viewModel.password, isSecure: true, icon: "lock")

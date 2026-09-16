@@ -1,18 +1,24 @@
-//
-//  SessionManager.swift
-//  Auren
-//
-//  Created by Mattis Lefranc Adam on 28.07.2026.
-//
-
 import Foundation
 import Combine
+import FirebaseAuth
 
 @MainActor
 class SessionManager: ObservableObject {
     @Published var currentUser: User?
-    @Published var token: String?
-    @Published var isAuthenticated: Bool = false
+    @Published private(set) var firebaseUser: FirebaseAuth.User?
+    @Published private(set) var token: String?
+    @Published private(set) var isAuthenticated = false
+
+    init() {
+        firebaseUser = Auth.auth().currentUser
+        isAuthenticated = firebaseUser != nil
+    }
+
+    func login(firebaseUser: FirebaseAuth.User, token: String) {
+        self.firebaseUser = firebaseUser
+        self.token = token
+        self.isAuthenticated = true
+    }
 
     func login(user: User, token: String? = nil) {
         self.currentUser = user
@@ -21,8 +27,15 @@ class SessionManager: ObservableObject {
     }
 
     func logout() {
-        self.currentUser = nil
-        self.token = nil
-        self.isAuthenticated = false
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            print("[Firebase Auth] Sign-out failed: \(error.localizedDescription)")
+        }
+
+        currentUser = nil
+        firebaseUser = nil
+        token = nil
+        isAuthenticated = false
     }
 }
