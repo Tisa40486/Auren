@@ -44,7 +44,7 @@ Auren's frontend is built with SwiftUI and communicates with a FastAPI backend t
 | ✅ | Account management (create, view accounts) |
 | ✅ | Budget/finance tracking module |
 | ✅ | Security audit logs (transactions, failed logins, etc.) |
-| 🔜 | Transaction creation from the app |
+| ✅  | Transaction creation from the app |
 | 🔜 | Todo list module |
 | 🔜 | Production environment (self-hosted, dev/prod separation) |
 | 🔜 | Full documentation (module docs, API reference, architecture diagram) |
