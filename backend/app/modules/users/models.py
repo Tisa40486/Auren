@@ -1,6 +1,7 @@
 from app.core.database import Base
-from sqlalchemy import Boolean, Column, Integer, String, event
 from firebase_admin import db
+from sqlalchemy import Boolean, Column, Integer, String, event
+
 
 class User(Base):
     __tablename__ = "users"

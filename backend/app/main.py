@@ -1,12 +1,12 @@
-from app.core.database import Base, engine, SessionLocal
+from app.core.database import Base, SessionLocal, engine
 from app.modules.auth.routers import authRouter
 from app.modules.finance.routers import financeRouter
+from app.modules.todo.routers import todoRouter
 from app.modules.transaction.routers import transactionRouter
+from app.modules.users.models import User
 from app.modules.users.routers import userRouter
 from fastapi import FastAPI
 from firebase_admin import db
-from app.modules.users.models import User
-
 
 app = FastAPI()
 Base.metadata.create_all(bind=engine)
@@ -14,6 +14,7 @@ app.include_router(userRouter)
 app.include_router(financeRouter)
 app.include_router(transactionRouter)
 app.include_router(authRouter)
+app.include_router(todoRouter)
 
 db_session = SessionLocal()
 
